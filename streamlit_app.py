@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
+
 # 1. Load models and encoders
 model = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/best_model1.pkl")
 mlb_degree = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/mlb_degree1.pkl")
