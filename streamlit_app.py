@@ -310,7 +310,7 @@ elif st.session_state.page == "Recommendations":
                 if pd.notna(score):
                     skill_scores[skill] = float(score)
     else:
-                st.warning("Skill scores not found. Please complete the assessment first.")
+        st.warning("Skill scores not found. Please complete the assessment first.")
         st.stop()
 
     # Ensure all model skills are available
