@@ -172,8 +172,6 @@ elif st.session_state.page == "Assessment":
         skill_df = pd.DataFrame.from_dict(skill_scores, orient="index", columns=["Average Score"])
         st.bar_chart(skill_df)
 
-       
-
         # Reset index to have 'Skill' as a column
         skill_df = skill_df.reset_index().rename(columns={"index": "Skill"})
         
@@ -212,6 +210,7 @@ elif st.session_state.page == "Assessment":
 
 elif st.session_state.page == "Recommendations":
     st.title("Career Recommendations")
+    
 
 else:                 
     st.title("Profile")
