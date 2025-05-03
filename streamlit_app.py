@@ -279,7 +279,7 @@ elif st.session_state.page == "Assessment":
             skill_scores[skill] = round(np.mean(values), 2) if values else None
 
     if st.button("Get Recommendation"):
-        set_page("Recommendation")
+        set_page("Recommendations")
         # Load model and encoders
         model = joblib.load("best_model1.pkl")
         mlb_degree = joblib.load("mlb_degree1.pkl")
