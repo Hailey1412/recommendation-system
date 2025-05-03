@@ -1,10 +1,10 @@
-# Capstone-project1
+# recommendation-system
 
 This is the career and course recommendation app. 
 
 ## Demo App
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://Capstone-project1.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://recommendation-system.streamlit.app/)
 
 ## GitHub Codespaces
 
