@@ -253,23 +253,23 @@ elif st.session_state.page == "Assessment":
         # ✅ STEP 4: Filter jobs from your dataset (assuming it's called df)
         # Make sure the 'Degree' column in df is a list of degrees like ["Bachelor's", "Master's"]
         # Convert the comma-separated strings to lists
-        df['Degree Requirement'] = df['Degree Requirement'].apply(lambda x: [deg.strip() for deg in x.split(',')])
-        matching_jobs = df[df['Degree Requirement'].apply(
-            lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
-        )]
+        #df['Degree Requirement'] = df['Degree Requirement'].apply(lambda x: [deg.strip() for deg in x.split(',')])
+        #matching_jobs = df[df['Degree Requirement'].apply(
+        #    lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
+        #)]
     
         # Optional: Also filter by field of study
-        if user_fields:
-            matching_jobs = matching_jobs[matching_jobs['Field of Study'].apply(
-                lambda job_fields: any(user_field in job_fields for user_field in user_fields)
-            )]
+        #if user_fields:
+        #    matching_jobs = matching_jobs[matching_jobs['Field of Study'].apply(
+         #       lambda job_fields: any(user_field in job_fields for user_field in user_fields)
+          #  )]
     
         # ✅ Display the results
-        st.subheader("🎯 Jobs Matching Your Education")
-        if not matching_jobs.empty:
-            st.dataframe(matching_jobs[['Job Title', 'Degree Requirement', 'Field of Study']])
-        else:
-            st.info("No matching jobs found with your current education profile.")
+        #st.subheader("🎯 Jobs Matching Your Education")
+        #if not matching_jobs.empty:
+        #    st.dataframe(matching_jobs[['Job Title', 'Degree Requirement', 'Field of Study']])
+        #else:
+         #   st.info("No matching jobs found with your current education profile.")
 
 
         st.write("Your responses:")
