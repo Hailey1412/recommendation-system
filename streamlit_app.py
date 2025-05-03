@@ -265,7 +265,7 @@ elif st.session_state.page == "Assessment":
         # ✅ Display the results
         st.subheader("🎯 Jobs Matching Your Education")
         if not matching_jobs.empty:
-            st.dataframe(matching_jobs[['Job Title', 'Degree', 'Field of Study']])
+            st.dataframe(matching_jobs[['Job Title', 'Degree Requirement', 'Field of Study']])
         else:
             st.info("No matching jobs found with your current education profile.")
 
