@@ -203,7 +203,6 @@ elif st.session_state.page == "Assessment":
         response = st.slider(question, 1, 5, key=qid)
         st.session_state.assessment_responses[qid] = response
 
-    #Ask for education info 
     # Ask for education info
     st.header("🎓 2. Add Your Education")
     
@@ -228,10 +227,10 @@ elif st.session_state.page == "Assessment":
             else:
                 field = None
         with col3:
-            remove = st.button("❌", key=f"remove_{i}")
+            remove = st.button("X", key=f"remove_{i}")
             if remove:
                 st.session_state.education_blocks.pop(i)
-                st.experimental_rerun()  # Refresh to re-index and update layout
+                #st.experimental_rerun()  # Refresh to re-index and update layout
     
         # Update session state
         if i < len(st.session_state.education_blocks):
