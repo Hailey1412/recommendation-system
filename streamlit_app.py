@@ -7,10 +7,10 @@ import altair as alt
 
 
 #Load the AI models for the career recommendation
-model = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/best_model1.pkl")
-mlb_degree = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/mlb_degree1.pkl")
-mlb_field = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/mlb_field1.pkl")
-le = joblib.load("/Users/m202109833/Desktop/Py-environment/streamlit try/model1/label_encoder1.pkl")
+model = joblib.load("best_model1.pkl")
+mlb_degree = joblib.load("mlb_degree1.pkl")
+mlb_field = joblib.load("mlb_field1.pkl")
+le = joblib.load("label_encoder1.pkl")
 
 # Load the job descriptions
 job_descriptions_df = pd.read_excel("/Users/m202109833/Desktop/Py-environment/capstone-code/Job_descriptions.xlsx")  # <-- Adjust the path if needed
