@@ -230,7 +230,6 @@ elif st.session_state.page == "Assessment":
             remove = st.button("X", key=f"remove_{i}")
             if remove:
                 st.session_state.education_blocks.pop(i)
-                #st.experimental_rerun()  # Refresh to re-index and update layout
     
         # Update session state
         if i < len(st.session_state.education_blocks):
@@ -244,15 +243,31 @@ elif st.session_state.page == "Assessment":
             st.error("❗ Please add at least one education entry.")
             st.stop()
         
-        # ✅ Collect unique degrees into a list
+        # ✅ Collect user degrees and fields
         user_degrees = list({edu["degree"] for edu in st.session_state.education_blocks})
-        st.write("🎓 Your Degrees:", user_degrees)  # Debug print (remove later)
-    
-        # Optional: Collect fields too
         user_fields = list({edu["field"] for edu in st.session_state.education_blocks if edu["field"]})
-        st.write("📚 Your Fields of Study:", user_fields)  # Debug print (remove later)
     
         st.success("Assessment submitted successfully!")
+    
+        # ✅ STEP 4: Filter jobs from your dataset (assuming it's called df)
+        # Make sure the 'Degree' column in df is a list of degrees like ["Bachelor's", "Master's"]
+        matching_jobs = df[df['Degree'].apply(
+            lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
+        )]
+    
+        # Optional: Also filter by field of study
+        if user_fields:
+            matching_jobs = matching_jobs[matching_jobs['Field of Study'].apply(
+                lambda job_fields: any(user_field in job_fields for user_field in user_fields)
+            )]
+    
+        # ✅ Display the results
+        st.subheader("🎯 Jobs Matching Your Education")
+        if not matching_jobs.empty:
+            st.dataframe(matching_jobs[['Job Title', 'Degree', 'Field of Study']])
+        else:
+            st.info("No matching jobs found with your current education profile.")
+
 
 
         
