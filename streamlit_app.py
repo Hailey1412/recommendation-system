@@ -5,6 +5,7 @@ import numpy as np
 import joblib
 import altair as alt
 
+df = pd.read_csv("Data_job-skills-degree.csv")
 
 #Load the AI models for the career recommendation
 model = joblib.load("best_model1.pkl")
