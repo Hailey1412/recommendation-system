@@ -252,6 +252,8 @@ elif st.session_state.page == "Assessment":
     
         # ✅ STEP 4: Filter jobs from your dataset (assuming it's called df)
         # Make sure the 'Degree' column in df is a list of degrees like ["Bachelor's", "Master's"]
+        # Convert the comma-separated strings to lists
+        df['Degree Requirement'] = df['Degree Requirement'].apply(lambda x: [deg.strip() for deg in x.split(',')])
         matching_jobs = df[df['Degree Requirement'].apply(
             lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
         )]
