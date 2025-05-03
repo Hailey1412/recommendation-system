@@ -13,7 +13,7 @@ mlb_field = joblib.load("mlb_field1.pkl")
 le = joblib.load("label_encoder1.pkl")
 
 # Load the job descriptions
-job_descriptions_df = pd.read_excel("/Users/m202109833/Desktop/Py-environment/capstone-code/Job_descriptions.xlsx")  # <-- Adjust the path if needed
+job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")  # <-- Adjust the path if needed
 job_descriptions_dict = dict(zip(job_descriptions_df["Job Title"], job_descriptions_df["Description"]))
 
 # Skill order for model input
