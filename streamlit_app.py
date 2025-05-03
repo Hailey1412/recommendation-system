@@ -1,8 +1,12 @@
 import streamlit as st
 import pandas as pd
+import os
 import numpy as np
 import joblib
+import altair as alt
 
+
+#Load the AI models for the career recommendation
 model = joblib.load("best_model1.pkl")
 mlb_degree = joblib.load("mlb_degree1.pkl")
 mlb_field = joblib.load("mlb_field1.pkl")
@@ -12,21 +16,16 @@ le = joblib.load("label_encoder1.pkl")
 job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")  # <-- Adjust the path if needed
 job_descriptions_dict = dict(zip(job_descriptions_df["Job Title"], job_descriptions_df["Description"]))
 
-
-# 2. Define skills and questions
-skill_groups = {
-    "Decision-Making": ["Q1", "Q2", "Q3", "Q4"],
-    "Real-life Experience": ["Q5", "Q6", "Q7"],
-    "Work Based Learning": ["Q8", "Q9"],
-    "Teamwork Courses": ["Q10"],
-    "Presentation Courses": ["Q11"],
-    "Emotional Intelligence": ["Q12", "Q13", "Q14", "Q15"],
-    "Communication": ["Q16", "Q17"],
-    "Problem Solving Skills": ["Q18", "Q19"],
-    "Self-management": ["Q20", "Q21"],
-    "Teamwork": ["Q22", "Q23", "Q24"],
-    "Professionalism": ["Q25", "Q26", "Q27"]
-}
+# Skill order for model input
+model_skill_order = [
+    "Decision-Making",
+    "Emotional Intelligence",
+    "Real-life Experience",
+    "Communication",
+    "Self-management",
+    "Teamwork",
+    "Professionalism"
+]
 
 questions = {
     "Q1": "I have self-awareness of my skills and track progress towards goals",
@@ -56,18 +55,22 @@ questions = {
     "Q25": "I apply feedback to improve future work",
     "Q26": "I handle sensitive info with confidentiality",
     "Q27": "I adapt my attitude and behavior to situations"
-}  # (your existing 27 questions dictionary here)
+}  # (existing 27 questions dictionary here)
 
-# Skill order for model input
-model_skill_order = [
-    "Decision-Making",
-    "Emotional Intelligence",
-    "Real-life Experience",
-    "Communication",
-    "Self-management",
-    "Teamwork",
-    "Professionalism"
-]
+#Define skills and questions
+skill_groups = {
+    "Decision-Making": ["Q1", "Q2", "Q3", "Q4"],
+    "Real-life Experience": ["Q5", "Q6", "Q7"],
+    "Work Based Learning": ["Q8", "Q9"],
+    "Teamwork Courses": ["Q10"],
+    "Presentation Courses": ["Q11"],
+    "Emotional Intelligence": ["Q12", "Q13", "Q14", "Q15"],
+    "Communication": ["Q16", "Q17"],
+    "Problem Solving Skills": ["Q18", "Q19"],
+    "Self-management": ["Q20", "Q21"],
+    "Teamwork": ["Q22", "Q23", "Q24"],
+    "Professionalism": ["Q25", "Q26", "Q27"]
+}
 
 skill_courses = {
     "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
@@ -108,110 +111,245 @@ question_courses = {
     "Q27": "https://www.edx.org/course/professional-skills-for-the-workplace"
 }  # (your question_courses dictionary)
 
- # --- STREAMLIT APP ---
 
-st.title("Career Path and Skill Recommendation Assessment")
+# File to store users
+USER_CSV = "users.csv"
 
-st.header("📝 1. Complete the Assessment")
+# Load or create user data
+if os.path.exists(USER_CSV):
+    users_df = pd.read_csv(USER_CSV)
+else:
+    users_df = pd.DataFrame(columns=["username"])
+    users_df.to_csv(USER_CSV, index=False)
 
 # Initialize session state
-if "assessment_done" not in st.session_state:
-    st.session_state.assessment_done = False
+if "page" not in st.session_state:
+    st.session_state.page = "Homepage"
 if "education_blocks" not in st.session_state:
     st.session_state.education_blocks = []
 
-responses = {}
-with st.form(key='assessment_form'):
-    for q, text in questions.items():
-        responses[q] = st.slider(text, 1, 5, 3)
-    submitted = st.form_submit_button("Submit Assessment")
+def set_page(selected):
+    st.session_state.page = selected
 
-if submitted:
-    st.session_state.responses = responses
-    st.session_state.assessment_done = True
+# Sidebar navigation
+st.sidebar.title("Navigation")
+sidebar_selection = st.sidebar.radio("Go to", 
+    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Recommendations"],
+    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Recommendations"].index(st.session_state.page),
+    key="sidebar_page"
+)
 
-# Only move to education AFTER assessment is done
-if st.session_state.assessment_done:
+if sidebar_selection != st.session_state.page:
+    st.session_state.page = sidebar_selection
 
-    # 1. Calculate skills
-    skill_averages = {}
-    for skill, qs in skill_groups.items():
-        avg = np.mean([st.session_state.responses[q] for q in qs])
-        skill_averages[skill] = round(avg, 2)
+# Routing
+if st.session_state.page == "Homepage":
+    st.title("Empowering UAE Youth for the Future of Work")
+    st.subheader("Discover your strengths. Choose your path.")
+    st.markdown("""
+    We have created a personalized AI-powered platform designed to help youth in the UAE discover their strengths, explore careers, and find courses to grow.  
+    Take our skills-based assessment and receive career and course recommendations tailored to your profile.
+    """)
+    st.markdown("#### 🧠 Skills → 📝 Assessment → 💼 Career → 🎓 Courses")
 
-    st.success("✅ Assessment Submitted!")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Start as Guest"):
+            st.session_state.current_user = "Guest"
+            set_page("Assessment")
+    with col2:
+        if st.button("Login / Sign Up"):
+            set_page("Login / Sign up")
 
-    # 2. Show skills
-    st.subheader("📊 Your Skill Scores (11 Skills)")
-    for skill, avg in skill_averages.items():
-        st.write(f"**{skill}**: {avg}")
+elif st.session_state.page == "Login / Sign up":
+    st.title("Login / Sign Up")
+    auth_mode = st.radio("Choose an option:", ["Sign Up", "Log In"], horizontal=True)
+    username = st.text_input("Enter your username:")
 
-    # 3. Prepare model input
-    model_skills_input = [skill_averages[s] for s in model_skill_order]
+    if auth_mode == "Sign Up":
+        if st.button("Create Account"):
+            if username.strip() == "":
+                st.warning("Username cannot be empty.")
+            elif username in users_df["username"].values:
+                st.error("Username already exists. Try another one.")
+            else:
+                new_user = pd.DataFrame([[username]], columns=["username"])
+                users_df = pd.concat([users_df, new_user], ignore_index=True)
+                users_df.to_csv(USER_CSV, index=False)
+                st.session_state.current_user = username
+                st.success(f"Welcome, {username}! Your account has been created.")
+                set_page("Profile")
 
-    st.header("🎓 2. Add Your Education")
+    elif auth_mode == "Log In":
+        if st.button("Log In"):
+            if username.strip() == "":
+                st.warning("Please enter a username.")
+            elif username in users_df["username"].values:
+                st.session_state.current_user = username
+                st.success(f"Welcome back, {username}!")
+                set_page("Profile")
+            else:
+                st.error("User not found. Please sign up first.")
+    
+elif st.session_state.page == "Assessment":
+    st.title("Assessment")
+    st.write("Let's assess your skills!")
+
+    # Store responses in session state
+    if "assessment_responses" not in st.session_state:
+        st.session_state.assessment_responses = {}
+
+    for qid, question in questions.items():
+        response = st.slider(question, 1, 5, key=qid)
+        st.session_state.assessment_responses[qid] = response
+
+    #Ask for education info 
+    st.header("Add your Education Details")
 
     degree_options = list(mlb_degree.classes_)
     field_options = list(mlb_field.classes_)
 
-    # Add Education Entry Button
-    if st.button("➕ Add Education"):
+    if st.button(" + Add Another Education Entry"):
         st.session_state.education_blocks.append({"degree": "", "field": ""})
 
-    # Display Education Inputs
     for i, edu in enumerate(st.session_state.education_blocks):
-        st.markdown(f"##### 🎓 Education {i+1}")
-        degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
-        if degree != "High School Diploma":
-            field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
-        else:
-            field = None
-        st.session_state.education_blocks[i] = {"degree": degree, "field": field}
-
-    # Predict Career
-    if st.button("✅ Get Career Recommendations"):
-        if not st.session_state.education_blocks:
-            st.error("❗ Please add at least one education entry.")
-            st.stop()
-
-        try:
-            selected_degrees = [entry["degree"] for entry in st.session_state.education_blocks]
-            selected_fields = [entry["field"] for entry in st.session_state.education_blocks if entry["field"] is not None]
-
-            degree_encoded = mlb_degree.transform([selected_degrees])
-            field_encoded = mlb_field.transform([selected_fields]) if selected_fields else np.zeros((1, len(mlb_field.classes_)))
-
-            model_input = np.hstack((np.array(model_skills_input).reshape(1, -1), degree_encoded, field_encoded))
-
-            # 4. Predict
-            if hasattr(model, "predict_proba"):
-                probs = model.predict_proba(model_input)[0]
-                top_indices = np.argsort(probs)[-5:][::-1]
-                job_titles = le.inverse_transform(top_indices)
-                scores = probs[top_indices]
-
-                st.subheader("🎯 Top 5 Job Recommendations:")
-                print("\n🎯 Top 5 Job Recommendations:")
-                for idx, (title, score) in enumerate(zip(job_titles, scores), 1):
-                    description = job_descriptions_dict.get(title, "No description available.")
-                    st.write(f"\n{i}. {title} — Confidence: {score:.2%}")
-                    st.write(f"   📖 Description: {description}")
+        with st.container(): 
+            st.subheader(f"Education Entry {i+1}")
+            degree = st.selectbox(f"Degree {i+1}", degree_options, key=f"degree_{i}")
+            if degree != "High School Diploma":
+                field = st.selectbox(f"Field of Study {i+1}", field_options, key=f"field_{i}")
             else:
-                prediction = model.predict(model_input)
-                job = le.inverse_transform(prediction)[0]
-                st.subheader(f"🎯 Recommended Job Title: **{job}**")
+                field = None
+            st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+    
+    st.markdown("---")
+    if st.button("Submit Assessment"):
+        st.success("Assessment submitted successfully!")
+        st.write("Your responses:")
+        st.write(st.session_state.assessment_responses)
 
-            # 5. Skill Courses
-            st.subheader("🔵 Courses Based on Your Skills")
+        # Calculate skill group scores
+        skill_scores = {}
+        for skill, qid_list in skill_groups.items():
+            values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
+            skill_scores[skill] = round(np.mean(values), 2) if values else None
+
+        #Display scores 
+        st.subheader("Your Skill Assessment Results:")
+        skill_df = pd.DataFrame(skill_scores.items(), columns= ["Skill", "Average Score"])
+        st.dataframe(skill_df, use_container_width=True)
+        
+        #display as bar chart
+        st.markdown("### 📊 Skill Scores Overview")
+        skill_df = pd.DataFrame.from_dict(skill_scores, orient="index", columns=["Average Score"])
+        st.bar_chart(skill_df)
+
+
+        # Reset index to have 'Skill' as a column
+        skill_df = skill_df.reset_index().rename(columns={"index": "Skill"})
+
+        # Altair bar chart with fixed y-axis
+        bar = alt.Chart(skill_df).mark_bar(color="#4a90e2").encode(
+            x=alt.X("Skill:N", sort=None, title="Skill"),
+            y=alt.Y("Average Score:Q", scale=alt.Scale(domain=[0, 5]), title="Score"),
+            tooltip=["Skill", "Average Score"]
+        ).properties(
+            width=600,
+            height=400,
+            title="Skill Assessment Scores"
+        )
+
+        st.altair_chart(bar, use_container_width=True)
+
+        #display as text/metrcis 
+        st.markdown("### 🧠 Skill-by-Skill Scores")
+        cols = st.columns(3)
+        for i, (skill, score) in enumerate(skill_scores.items()):
+            with cols[i % 3]:
+                st.metric(label=skill, value=score)
+
+        # --- Save to user file ---
+        user = st.session_state.get("current_user", "Guest")
+        if user != "Guest":
+            users_df = pd.read_csv(USER_CSV)
+            if user in users_df["username"].values:
+                for skill, score in skill_scores.items():
+                    users_df.loc[users_df["username"] == user, skill] = score
+                users_df.to_csv(USER_CSV, index=False)
+                st.success("Your results were saved to your profile!")
+            else:
+                st.error("User not found in database.")
+        else:
+            st.info("Results not saved because you are using Guest mode.")
+
+elif st.session_state.page == "Recommendations":
+    st.title("Career Recommendations")
+
+    # Load model and encoders
+    model = joblib.load("best_model1.pkl")
+    mlb_degree = joblib.load("mlb_degree1.pkl")
+    mlb_field = joblib.load("mlb_field1.pkl")
+    le = joblib.load("label_encoder1.pkl")
+    job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")
+    job_descriptions_dict = dict(zip(job_descriptions_df["Job Title"], job_descriptions_df["Description"]))
+
+    # Ask for education info
+    st.subheader("📚 Your Education Background")
+    selected_degrees = st.multiselect("Select your degree(s):", mlb_degree.classes_)
+    selected_fields = st.multiselect("Select your field(s) of study:", mlb_field.classes_)
+
+    # Fetch saved skill scores
+    user = st.session_state.get("current_user", "Guest")
+    skill_scores = {}
+    if user != "Guest":
+        users_df = pd.read_csv(USER_CSV)
+        if user in users_df["username"].values:
+            row = users_df[users_df["username"] == user]
             for skill in model_skill_order:
-                if skill_averages[skill] <= 3:
-                    st.write(f"- {skill}: [Course Link]({skill_courses[skill]})")
+                score = row[skill].values[0]
+                if pd.notna(score):
+                    skill_scores[skill] = float(score)
+    else:
+        st.warning("Skill scores not found. Please complete the assessment first.")
+        st.stop()
 
-            # 6. Question-based Courses
-            st.subheader("🟣 Personalized Course Suggestions")
-            for q, score in st.session_state.responses.items():
-                if score <= 3 and q in question_courses:
-                    st.write(f"- {questions[q]}: [Course Link]({question_courses[q]})")
+    # Ensure all model skills are available
+    if len(skill_scores) < len(model_skill_order):
+        st.error("Some skills are missing. Please ensure you've completed the assessment.")
+        st.stop()
 
-        except Exception as e:
-            st.error(f"Something went wrong: {e}")
+    # Encode education inputs
+    degree_encoded = mlb_degree.transform([selected_degrees])
+    field_encoded = mlb_field.transform([selected_fields])
+
+    # Prepare the input vector for the model
+    input_vector = list([skill_scores[skill] for skill in model_skill_order])
+    input_vector.extend(degree_encoded[0])
+    input_vector.extend(field_encoded[0])
+    input_vector = np.array(input_vector).reshape(1, -1)
+
+    # Make predictions
+    predicted_label = model.predict(input_vector)[0]
+    predicted_job = le.inverse_transform([predicted_label])[0]
+
+    # Show results
+    st.success(f"🎯 Recommended Career Path: **{predicted_job}**")
+    if predicted_job in job_descriptions_dict:
+        st.markdown(f"**Job Description:** {job_descriptions_dict[predicted_job]}")
+
+    # Show relevant courses
+    st.markdown("### 🎓 Recommended Skill Courses")
+    for skill in model_skill_order:
+        if skill in skill_courses:
+            st.markdown(f"- **{skill}**: [{skill_courses[skill]}]({skill_courses[skill]})")
+
+
+
+else:                 
+    st.title("Profile")
+    user = st.session_state.get("current_user", "Guest")
+    st.title(f"Welcome {user}!")
+    st.write("You can view and keep progress of all your results here!")
+    if st.button("Homepage"):
+        set_page("Homepage")
+    
