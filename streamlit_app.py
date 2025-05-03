@@ -72,6 +72,46 @@ skill_groups = {
     "Professionalism": ["Q25", "Q26", "Q27"]
 }
 
+skill_courses = {
+    "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
+    "Emotional Intelligence": "https://www.linkedin.com/learning/developing-your-emotional-intelligence",
+    "Real-life Experience": "https://www.coursera.org/learn/experiential-learning",
+    "Communication": "https://www.coursera.org/learn/successful-communication",
+    "Self-management": "https://www.linkedin.com/learning/time-management-fundamentals",
+    "Teamwork": "https://www.coursera.org/learn/teamwork-skills",
+    "Professionalism": "https://www.edx.org/course/professional-skills-for-the-workplace"
+}   # (your skill_courses dictionary)
+question_courses = {
+    "Q1": "https://www.coursera.org/specializations/career-success",
+    "Q2": "https://www.coursera.org/specializations/career-success",
+    "Q3": "https://www.coursera.org/specializations/career-success",
+    "Q4": "https://www.coursera.org/specializations/career-success",
+    "Q5": "https://www.edx.org/course/networking-and-mentorship",
+    "Q6": "https://www.edx.org/course/networking-and-mentorship",
+    "Q7": "https://www.edx.org/course/networking-and-mentorship",
+    "Q8": "https://www.coursera.org/learn/internship-career-preparation",
+    "Q9": "https://www.coursera.org/learn/internship-career-preparation",
+    "Q10": "https://www.futurelearn.com/courses/collaborative-working-in-a-remote-team",
+    "Q11": "https://www.edx.org/course/effective-presentation-and-communication-skills",
+    "Q12": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q13": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q14": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q15": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q16": "https://www.edx.org/course/communication-skills-for-bridging-divides",
+    "Q17": "https://www.edx.org/course/communication-skills-for-bridging-divides",
+    "Q18": "https://www.coursera.org/learn/creative-problem-solving",
+    "Q19": "https://www.coursera.org/learn/creative-problem-solving",
+    "Q20": "https://www.coursera.org/learn/work-smarter-not-harder",
+    "Q21": "https://www.coursera.org/learn/work-smarter-not-harder",
+    "Q22": "https://www.coursera.org/learn/teamwork-skills",
+    "Q23": "https://www.coursera.org/learn/teamwork-skills",
+    "Q24": "https://www.coursera.org/learn/teamwork-skills",
+    "Q25": "https://www.edx.org/course/professional-skills-for-the-workplace",
+    "Q26": "https://www.edx.org/course/professional-skills-for-the-workplace",
+    "Q27": "https://www.edx.org/course/professional-skills-for-the-workplace"
+}  # (your question_courses dictionary)
+
+
 # File to store users
 USER_CSV = "users.csv"
 
