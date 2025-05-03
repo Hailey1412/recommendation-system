@@ -206,7 +206,7 @@ elif st.session_state.page == "Assessment":
     # Ask for education info
     st.header("🎓 2. Add Your Education")
     
-    degree_options = list(mlb_degree.classes_)
+    degree_options = ["High School Diploma", "Associate's", "Certification", "Bachelor's", "Master's", "PhD"]
     field_options = list(mlb_field.classes_)
     
     # Add Education Entry Button
@@ -243,8 +243,17 @@ elif st.session_state.page == "Assessment":
         if not st.session_state.education_blocks:
             st.error("❗ Please add at least one education entry.")
             st.stop()
-        else:
-            st.success("Assessment submitted successfully!")
+        
+        # ✅ Collect unique degrees into a list
+        user_degrees = list({edu["degree"] for edu in st.session_state.education_blocks})
+        st.write("🎓 Your Degrees:", user_degrees)  # Debug print (remove later)
+    
+        # Optional: Collect fields too
+        user_fields = list({edu["field"] for edu in st.session_state.education_blocks if edu["field"]})
+        st.write("📚 Your Fields of Study:", user_fields)  # Debug print (remove later)
+    
+        st.success("Assessment submitted successfully!")
+
 
         
         st.write("Your responses:")
