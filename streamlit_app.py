@@ -397,6 +397,39 @@ else:
     user = st.session_state.get("current_user", "Guest")
     st.title(f"Welcome {user}!")
     st.write("You can view and keep progress of all your results here!")
+    st.dataframe(skill_df)
+
+    # Optional: Show a bar chart
+    chart = alt.Chart(skill_df).mark_bar().encode(
+        x=alt.X("Skill", sort="-y"),
+        y="Average Score",
+        color="Average Score"
+    ).properties(height=300)
+
+    st.altair_chart(chart, use_container_width=True)
+    # Create input vector in model order
+    model_input = [skill_scores[skill] for skill in model_skill_order]
+
+    # Add degree and field encodings
+    encoded_degrees = mlb_degree.transform([user_degrees])
+    encoded_fields = mlb_field.transform([user_fields])
+
+    # Combine all features
+    full_input = np.concatenate([model_input, encoded_degrees[0], encoded_fields[0]]).reshape(1, -1)
+
+            # Predict job titles
+    predictions = model.predict(full_input)
+    job_titles = le.inverse_transform(predictions)
+
+    st.subheader("🔍 AI-Recommended Career Path(s)")
+    for job in job_titles:
+        st.markdown(f"**{job}**")
+        if job in job_descriptions_dict:
+            st.markdown(f"📄 {job_descriptions_dict[job]}")
+
+
+    
+
     if st.button("Homepage"):
         set_page("Homepage")
     
