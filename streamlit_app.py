@@ -125,6 +125,8 @@ else:
 # Initialize session state
 if "page" not in st.session_state:
     st.session_state.page = "Homepage"
+if "education_blocks" not in st.session_state:
+    st.session_state.education_blocks = []
 
 def set_page(selected):
     st.session_state.page = selected
@@ -201,6 +203,25 @@ elif st.session_state.page == "Assessment":
         response = st.slider(question, 1, 5, key=qid)
         st.session_state.assessment_responses[qid] = response
 
+    #Ask for education info 
+    st.header("Add your Education Details")
+
+    degree_option = list(mlb_degree.classes_)
+    field_options = list(mlb_field.classes_)
+
+    if st.button(" + Add Another Education Entry"):
+        st.session_state.education_blocks.append({"degree": "", "field": ""})
+
+    for i, edu in enumerate(st.session_state.education_blocks):
+        with st.container(): 
+            st.subheader(f"Education Entry {i+1}")
+            degree = st.selectbox(f"Degree {i+1}", degree_options, key=f"degree_{i}")
+            if degree != "High School Diploma":
+                field = st.selectbox(f"Field of Study {i+1}", field_options, key=f"field_{i}")
+            else:
+                field = None
+            st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+    
     st.markdown("---")
     if st.button("Submit Assessment"):
         st.success("Assessment submitted successfully!")
@@ -223,7 +244,6 @@ elif st.session_state.page == "Assessment":
         skill_df = pd.DataFrame.from_dict(skill_scores, orient="index", columns=["Average Score"])
         st.bar_chart(skill_df)
 
-       
 
         # Reset index to have 'Skill' as a column
         skill_df = skill_df.reset_index().rename(columns={"index": "Skill"})
