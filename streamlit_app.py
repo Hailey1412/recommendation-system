@@ -205,47 +205,47 @@ elif st.session_state.page == "Assessment":
 
     #Ask for education info 
     # Ask for education info
-st.header("🎓 2. Add Your Education")
-
-degree_options = list(mlb_degree.classes_)
-field_options = list(mlb_field.classes_)
-
-# Add Education Entry Button
-if st.button("➕ Add Education"):
-    st.session_state.education_blocks.append({"degree": "", "field": ""})
-
-# Display Education Inputs
-for i in range(len(st.session_state.education_blocks)):
-    edu = st.session_state.education_blocks[i]
-    st.markdown(f"##### 🎓 Education {i+1}")
-    col1, col2, col3 = st.columns([4, 4, 1])
-
-    with col1:
-        degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
-    with col2:
-        if degree != "High School Diploma":
-            field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
+    st.header("🎓 2. Add Your Education")
+    
+    degree_options = list(mlb_degree.classes_)
+    field_options = list(mlb_field.classes_)
+    
+    # Add Education Entry Button
+    if st.button("➕ Add Education"):
+        st.session_state.education_blocks.append({"degree": "", "field": ""})
+    
+    # Display Education Inputs
+    for i in range(len(st.session_state.education_blocks)):
+        edu = st.session_state.education_blocks[i]
+        st.markdown(f"##### 🎓 Education {i+1}")
+        col1, col2, col3 = st.columns([4, 4, 1])
+    
+        with col1:
+            degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
+        with col2:
+            if degree != "High School Diploma":
+                field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
+            else:
+                field = None
+        with col3:
+            remove = st.button("❌", key=f"remove_{i}")
+            if remove:
+                st.session_state.education_blocks.pop(i)
+                st.experimental_rerun()  # Refresh to re-index and update layout
+    
+        # Update session state
+        if i < len(st.session_state.education_blocks):
+            st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+    
+    st.markdown("---")
+    
+    # Submit Button
+    if st.button("Submit Assessment"):
+        if not st.session_state.education_blocks:
+            st.error("❗ Please add at least one education entry.")
+            st.stop()
         else:
-            field = None
-    with col3:
-        remove = st.button("❌", key=f"remove_{i}")
-        if remove:
-            st.session_state.education_blocks.pop(i)
-            st.experimental_rerun()  # Refresh to re-index and update layout
-
-    # Update session state
-    if i < len(st.session_state.education_blocks):
-        st.session_state.education_blocks[i] = {"degree": degree, "field": field}
-
-st.markdown("---")
-
-# Submit Button
-if st.button("Submit Assessment"):
-    if not st.session_state.education_blocks:
-        st.error("❗ Please add at least one education entry.")
-        st.stop()
-    else:
-        st.success("Assessment submitted successfully!")
+            st.success("Assessment submitted successfully!")
 
         
         st.write("Your responses:")
