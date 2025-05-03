@@ -203,28 +203,72 @@ elif st.session_state.page == "Assessment":
         response = st.slider(question, 1, 5, key=qid)
         st.session_state.assessment_responses[qid] = response
 
-    #Ask for education info 
-    st.header("Add your Education Details")
-
-    degree_options = list(mlb_degree.classes_)
+    # Ask for education info
+    st.header("🎓 2. Add Your Education")
+    
+    degree_options = ["High School Diploma", "Associate's", "Certification", "Bachelor's", "Master's", "PhD"]
     field_options = list(mlb_field.classes_)
-
-    if st.button(" + Add Another Education Entry"):
+    
+    # Add Education Entry Button
+    if st.button("➕ Add Education"):
         st.session_state.education_blocks.append({"degree": "", "field": ""})
-
-    for i, edu in enumerate(st.session_state.education_blocks):
-        with st.container(): 
-            st.subheader(f"Education Entry {i+1}")
-            degree = st.selectbox(f"Degree {i+1}", degree_options, key=f"degree_{i}")
+    
+    # Display Education Inputs
+    for i in range(len(st.session_state.education_blocks)):
+        edu = st.session_state.education_blocks[i]
+        st.markdown(f"##### 🎓 Education {i+1}")
+        col1, col2, col3 = st.columns([4, 4, 1])
+    
+        with col1:
+            degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
+        with col2:
             if degree != "High School Diploma":
-                field = st.selectbox(f"Field of Study {i+1}", field_options, key=f"field_{i}")
+                field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
             else:
                 field = None
+        with col3:
+            remove = st.button("X", key=f"remove_{i}")
+            if remove:
+                st.session_state.education_blocks.pop(i)
+    
+        # Update session state
+        if i < len(st.session_state.education_blocks):
             st.session_state.education_blocks[i] = {"degree": degree, "field": field}
     
     st.markdown("---")
+    
+    # Submit Button
     if st.button("Submit Assessment"):
+        if not st.session_state.education_blocks:
+            st.error("❗ Please add at least one education entry.")
+            st.stop()
+        
+        # ✅ Collect user degrees and fields
+        user_degrees = list({edu["degree"] for edu in st.session_state.education_blocks})
+        user_fields = list({edu["field"] for edu in st.session_state.education_blocks if edu["field"]})
+    
         st.success("Assessment submitted successfully!")
+    
+        # ✅ STEP 4: Filter jobs from your dataset (assuming it's called df)
+        # Make sure the 'Degree' column in df is a list of degrees like ["Bachelor's", "Master's"]
+        # Convert the comma-separated strings to lists
+        #df['Degree Requirement'] = df['Degree Requirement'].apply(lambda x: [deg.strip() for deg in x.split(',')])
+        #matching_jobs = df[df['Degree Requirement'].apply(
+        #    lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
+        #)]
+    
+        # Optional: Also filter by field of study
+        #if user_fields:
+        #    matching_jobs = matching_jobs[matching_jobs['Field of Study'].apply(
+         #       lambda job_fields: any(user_field in job_fields for user_field in user_fields)
+          #  )]
+    
+        # ✅ Display the results
+        #st.subheader("🎯 Jobs Matching Your Education")
+        #if not matching_jobs.empty:
+        #    st.dataframe(matching_jobs[['Job Title', 'Degree Requirement', 'Field of Study']])
+        #else:
+         #   st.info("No matching jobs found with your current education profile.")
         st.write("Your responses:")
         st.write(st.session_state.assessment_responses)
 
