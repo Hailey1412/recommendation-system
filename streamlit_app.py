@@ -204,23 +204,30 @@ elif st.session_state.page == "Assessment":
         st.session_state.assessment_responses[qid] = response
 
     #Ask for education info 
-    st.header("Add your Education Details")
+    st.header("🎓 2. Add Your Education")
 
     degree_options = list(mlb_degree.classes_)
     field_options = list(mlb_field.classes_)
 
-    if st.button(" + Add Another Education Entry"):
+    # Add Education Entry Button
+    if st.button("➕ Add Education"):
         st.session_state.education_blocks.append({"degree": "", "field": ""})
 
+    # Display Education Inputs
     for i, edu in enumerate(st.session_state.education_blocks):
-        with st.container(): 
-            st.subheader(f"Education Entry {i+1}")
-            degree = st.selectbox(f"Degree {i+1}", degree_options, key=f"degree_{i}")
-            if degree != "High School Diploma":
-                field = st.selectbox(f"Field of Study {i+1}", field_options, key=f"field_{i}")
-            else:
-                field = None
-            st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+        st.markdown(f"##### 🎓 Education {i+1}")
+        degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
+        if degree != "High School Diploma":
+            field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
+        else:
+            field = None
+        st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+
+    # Predict Career
+    if st.button("✅ Get Career Recommendations"):
+        if not st.session_state.education_blocks:
+            st.error("❗ Please add at least one education entry.")
+            st.stop()
     
     st.markdown("---")
     if st.button("Submit Assessment"):
