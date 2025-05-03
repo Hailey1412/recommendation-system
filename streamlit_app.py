@@ -99,6 +99,9 @@ if st.session_state.page == "Homepage":
     """)
     st.markdown("#### 🧠 Skills → 📝 Assessment → 💼 Career → 🎓 Courses")
 
+    df = pd.read_csv('Data_job-skills-degree.csv')
+    df
+
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Start as Guest"):
