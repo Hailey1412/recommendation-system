@@ -26,7 +26,35 @@ model_skill_order = [
     "Communication", "Self-management", "Teamwork", "Professionalism"
 ]
 
-questions = {"Q1": "I have self-awareness of my skills and track progress towards goals", ...}  # Add all 27 Qs here
+questions = {
+    "Q1": "I have self-awareness of my skills and track progress towards goals",
+    "Q2": "I reflect on and assess myself on acquired learning experiences",
+    "Q3": "I seek new opportunities and review available options",
+    "Q4": "I have a clear vision of my career path and long-term goals",
+    "Q5": "I have attended alumni talks about career paths",
+    "Q6": "I have attended employer seminars on job opportunities and skills",
+    "Q7": "I have experienced employer participation in academic projects",
+    "Q8": "I have gained work experience through internships or placements",
+    "Q9": "I understand workplace structures and practices",
+    "Q10": "My degree offered many teamwork opportunities",
+    "Q11": "I gave many presentations during my degree",
+    "Q12": "I recognize my emotions in real time",
+    "Q13": "I read others' emotions through voice and facial expressions",
+    "Q14": "I control my emotions well",
+    "Q15": "I help people feel better when they are down",
+    "Q16": "I ask questions or seek help when needed",
+    "Q17": "I communicate my ideas clearly and confidently",
+    "Q18": "I identify problems and find multiple solutions",
+    "Q19": "I consider others and consequences in decision-making",
+    "Q20": "I prioritize my time effectively",
+    "Q21": "Deadlines motivate me to stay focused",
+    "Q22": "I keep teams engaged and communicate regularly",
+    "Q23": "I value diversity of opinions in teams",
+    "Q24": "I contribute actively and complete my group tasks",
+    "Q25": "I apply feedback to improve future work",
+    "Q26": "I handle sensitive info with confidentiality",
+    "Q27": "I adapt my attitude and behavior to situations"
+}  # All 27 Qs here
 
 skill_groups = {
     "Decision-Making": ["Q1", "Q2", "Q3", "Q4"],
@@ -42,8 +70,44 @@ skill_groups = {
     "Professionalism": ["Q25", "Q26", "Q27"]
 }
 
-skill_courses = {"Decision-Making": "https://...", ...}  # Add actual links
-question_courses = {"Q1": "https://...", ...}  # Add actual links
+skill_courses = {
+    "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
+    "Emotional Intelligence": "https://www.linkedin.com/learning/developing-your-emotional-intelligence",
+    "Real-life Experience": "https://www.coursera.org/learn/experiential-learning",
+    "Communication": "https://www.coursera.org/learn/successful-communication",
+    "Self-management": "https://www.linkedin.com/learning/time-management-fundamentals",
+    "Teamwork": "https://www.coursera.org/learn/teamwork-skills",
+    "Professionalism": "https://www.edx.org/course/professional-skills-for-the-workplace"
+}   # (your skill_courses dictionary)
+question_courses = {
+    "Q1": "https://www.coursera.org/specializations/career-success",
+    "Q2": "https://www.coursera.org/specializations/career-success",
+    "Q3": "https://www.coursera.org/specializations/career-success",
+    "Q4": "https://www.coursera.org/specializations/career-success",
+    "Q5": "https://www.edx.org/course/networking-and-mentorship",
+    "Q6": "https://www.edx.org/course/networking-and-mentorship",
+    "Q7": "https://www.edx.org/course/networking-and-mentorship",
+    "Q8": "https://www.coursera.org/learn/internship-career-preparation",
+    "Q9": "https://www.coursera.org/learn/internship-career-preparation",
+    "Q10": "https://www.futurelearn.com/courses/collaborative-working-in-a-remote-team",
+    "Q11": "https://www.edx.org/course/effective-presentation-and-communication-skills",
+    "Q12": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q13": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q14": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q15": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
+    "Q16": "https://www.edx.org/course/communication-skills-for-bridging-divides",
+    "Q17": "https://www.edx.org/course/communication-skills-for-bridging-divides",
+    "Q18": "https://www.coursera.org/learn/creative-problem-solving",
+    "Q19": "https://www.coursera.org/learn/creative-problem-solving",
+    "Q20": "https://www.coursera.org/learn/work-smarter-not-harder",
+    "Q21": "https://www.coursera.org/learn/work-smarter-not-harder",
+    "Q22": "https://www.coursera.org/learn/teamwork-skills",
+    "Q23": "https://www.coursera.org/learn/teamwork-skills",
+    "Q24": "https://www.coursera.org/learn/teamwork-skills",
+    "Q25": "https://www.edx.org/course/professional-skills-for-the-workplace",
+    "Q26": "https://www.edx.org/course/professional-skills-for-the-workplace",
+    "Q27": "https://www.edx.org/course/professional-skills-for-the-workplace"
+}  # (your question_courses dictionary)
 
 # User storage
 USER_CSV = "users.csv"
