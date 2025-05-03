@@ -290,30 +290,39 @@ elif st.session_state.page == "Recommendations":
                 if pd.notna(score):
                     skill_scores[skill] = float(score)
     else:
-        st.info("Log in to receive personalized recommendations based on your saved results.")
+                st.warning("Skill scores not found. Please complete the assessment first.")
         st.stop()
 
+    # Ensure all model skills are available
     if len(skill_scores) < len(model_skill_order):
-        st.warning("Please complete your assessment first to get full recommendations.")
+        st.error("Some skills are missing. Please ensure you've completed the assessment.")
         st.stop()
 
-    if st.button("Get Recommendations"):
-        # Prepare input features
-        degree_encoded = mlb_degree.transform([selected_degrees])
-        field_encoded = mlb_field.transform([selected_fields])
-        skills_array = np.array([skill_scores[skill] for skill in model_skill_order]).reshape(1, -1)
+    # Encode education inputs
+    degree_encoded = mlb_degree.transform([selected_degrees])
+    field_encoded = mlb_field.transform([selected_fields])
 
-        final_input = np.hstack([skills_array, degree_encoded, field_encoded])
-        prediction = model.predict(final_input)
-        job_title = le.inverse_transform(prediction)[0]
+    # Prepare the input vector for the model
+    input_vector = list([skill_scores[skill] for skill in model_skill_order])
+    input_vector.extend(degree_encoded[0])
+    input_vector.extend(field_encoded[0])
+    input_vector = np.array(input_vector).reshape(1, -1)
 
-        st.success(f"🔮 Recommended Career: **{job_title}**")
-        st.markdown("#### 🧾 Job Description")
-        st.write(job_descriptions_dict.get(job_title, "No description available."))
+    # Make predictions
+    predicted_label = model.predict(input_vector)[0]
+    predicted_job = le.inverse_transform([predicted_label])[0]
 
-        st.markdown("#### 📈 Suggested Courses to Improve Your Skills")
-        for skill, url in skill_courses.items():
-            st.markdown(f"- [{skill}]({url})")
+    # Show results
+    st.success(f"🎯 Recommended Career Path: **{predicted_job}**")
+    if predicted_job in job_descriptions_dict:
+        st.markdown(f"**Job Description:** {job_descriptions_dict[predicted_job]}")
+
+    # Show relevant courses
+    st.markdown("### 🎓 Recommended Skill Courses")
+    for skill in model_skill_order:
+        if skill in skill_courses:
+            st.markdown(f"- **{skill}**: [{skill_courses[skill]}]({skill_courses[skill]})")
+
 
 
 else:                 
