@@ -330,6 +330,7 @@ elif st.session_state.page == "Assessment":
             st.info("Results not saved because you are using Guest mode.")
 
 elif st.session_state.page == "Recommendations":
+    st.write("Recs")
 
 else:                 
     st.title("Profile")
