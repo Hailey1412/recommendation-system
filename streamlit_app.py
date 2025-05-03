@@ -1,5 +1,5 @@
 import streamlit as st
 
-st.title('🎈 App Name')
+st.title('Empower your SKills')
 
-st.write('Hello world!')
+st.info("This is a recommendation system")
