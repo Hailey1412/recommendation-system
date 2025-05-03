@@ -175,7 +175,7 @@ elif st.session_state.page == "Assessment":
 
         # Reset index to have 'Skill' as a column
         skill_df = skill_df.reset_index().rename(columns={"index": "Skill"})
-        """
+        
         # Altair bar chart with fixed y-axis
         bar = alt.Chart(skill_df).mark_bar(color="#4a90e2").encode(
             x=alt.X("Skill:N", sort=None, title="Skill"),
@@ -186,7 +186,7 @@ elif st.session_state.page == "Assessment":
             height=400,
             title="Skill Assessment Scores"
         )
-        st.altair_chart(bar, use_container_width=True)"""
+        st.altair_chart(bar, use_container_width=True)
 
         #display as text/metrcis 
         st.markdown("### 🧠 Skill-by-Skill Scores")
