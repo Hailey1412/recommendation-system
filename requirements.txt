@@ -2,7 +2,4 @@ streamlit
 numpy
 pandas
 scikit-learn
-matplotlib.pyplot
 tensorflow
-ast
-joblib
