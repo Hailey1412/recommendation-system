@@ -273,10 +273,10 @@ elif st.session_state.page == "Assessment":
         st.write(st.session_state.assessment_responses)
 
         # Calculate skill group scores
-        skill_scores = {}
-        for skill, qid_list in skill_groups.items():
-            values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
-            skill_scores[skill] = round(np.mean(values), 2) if values else None
+    skill_scores = {}
+    for skill, qid_list in skill_groups.items():
+        values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
+        skill_scores[skill] = round(np.mean(values), 2) if values else None
 
     if st.button("Get Recommendation"):
         set_page("Recommendations")
