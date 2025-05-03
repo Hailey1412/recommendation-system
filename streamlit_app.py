@@ -206,7 +206,7 @@ elif st.session_state.page == "Assessment":
     #Ask for education info 
     st.header("Add your Education Details")
 
-    degree_option = list(mlb_degree.classes_)
+    degree_options = list(mlb_degree.classes_)
     field_options = list(mlb_field.classes_)
 
     if st.button(" + Add Another Education Entry"):
