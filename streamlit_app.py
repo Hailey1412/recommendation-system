@@ -222,16 +222,15 @@ elif st.session_state.page == "Assessment":
         else:
             field = None
         st.session_state.education_blocks[i] = {"degree": degree, "field": field}
-
-    # Predict Career
-    if st.button("✅ Get Career Recommendations"):
-        if not st.session_state.education_blocks:
-            st.error("❗ Please add at least one education entry.")
-            st.stop()
     
     st.markdown("---")
     if st.button("Submit Assessment"):
-        st.success("Assessment submitted successfully!")
+        if not st.session_state.education_blocks:
+            st.error("❗ Please add at least one education entry.")
+            st.stop()
+        else: 
+            st.success("Assessment submitted successfully!")
+        
         st.write("Your responses:")
         st.write(st.session_state.assessment_responses)
 
