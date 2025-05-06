@@ -515,15 +515,10 @@ else:
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
     
-    personalized_df = pd.DataFrame([
-        {"Course Name": name, "Link": f"[View Course]({url})"}
-        for name, url in courses_names.items()
-    ])
-    
-    # Display inside the expander
     with st.expander("📌 More Personalized Course Recommendations"):
-        st.markdown("<h4 style='color:#990000;'>Based on Your Individual Responses:</h4>", unsafe_allow_html=True)
-        st.dataframe(personalized_df, use_container_width=True)
+    st.markdown("<h4 style='color:#990000;'>Based on Your Individual Responses:</h4>", unsafe_allow_html=True)
+    for name, url in personalized_courses.items():
+        st.markdown(f"- **{name}** — [View Course]({url})")
     
         
     # Account-based saving
