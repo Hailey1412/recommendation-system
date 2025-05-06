@@ -134,7 +134,7 @@ if 'career_results' not in st.session_state:
 if 'course_progress' not in st.session_state:
     st.session_state.course_progress = {}
 
-
+skill_scores = {}
 
 def set_page(selected):
     st.session_state.page = selected
