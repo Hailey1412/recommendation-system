@@ -259,7 +259,7 @@ elif st.session_state.page == "Login / Sign up":
     
 elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
     st.title("Assessment")
-    st.write("Let's assess your skills!")
+    st.subheader("Let's assess your skills!")
     
     # Store responses in session state
     if "assessment_responses" not in st.session_state:
