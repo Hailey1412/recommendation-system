@@ -212,13 +212,14 @@ if st.session_state.page == "Homepage":
         if st.button("Login / Sign Up"):
             set_page("Login / Sign up")
 
+    
     # Handle button logic using query params or manual button click detection
-    if 'guest' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("guest"):
-        st.session_state.current_user = "Guest"
-        set_page("Assessment")
+   # if 'guest' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("guest"):
+     #   st.session_state.current_user = "Guest"
+     #   set_page("Assessment")
 
-    if 'login' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("login"):
-        set_page("Login / Sign up")
+  #  if 'login' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("login"):
+     #   set_page("Login / Sign up")
 
 elif st.session_state.page == "Login / Sign up":
     st.title("Login / Sign Up")
