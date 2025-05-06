@@ -515,18 +515,25 @@ else:
     # Personalized Courses Recommendations
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
-        # Identify low-score skills
-        low_score_skills = {skill: score for skill, score in skill_scores.items() if score <= 3}
-    
-        # For each low-score skill, display the related courses
-        for skill, score in low_score_skills.items():
-            if skill in skill_groups:  # Check if the skill has associated questions
-                for question in skill_groups[skill]:
-                    course_url = question_courses.get(question, "#")
-                    course_name = courses_names.get(course_url, "No Name")
-                    st.markdown(f"- [{course_name}]({course_url})")
+        for skill, questions in skill_groups.items():
+            if skill in st.session_state.low_skill_courses:  # Check if skill has low score
+                related_courses = []
+                for question in questions:
+                    if question in question_courses:
+                        course_url = question_courses[question]
+                        course_name = courses_names.get(course_url, 'No Name')
+                        related_courses.append(f"[{course_name}]({course_url})")
+        
+                if related_courses:
+                    st.markdown(f"### {skill} Courses:")
+                    for course in related_courses:
+                        st.markdown(f"- {course}")
+                else:
+                    st.warning(f"No courses found for {skill}.")
             else:
-                st.success("Great job! You scored above 3 in all courses.")
+                st.write(f"✅ Great job! You scored above 3 in {skill}.")
+
+        # Identify low-score skills
     
     # Account-based saving
     st.markdown("<br>", unsafe_allow_html=True)
