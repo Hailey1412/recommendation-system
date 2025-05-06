@@ -163,13 +163,14 @@ if sidebar_selection != st.session_state.page:
 
 # Routing
 if st.session_state.page == "Homepage":
+    if st.session_state.page == "Homepage":
     st.markdown("""
         <style>
             .full-width-image {
                 position: relative;
                 width: 100%;
                 height: 500px;
-                background-image: url('https://pchr.gov.ae/app_themes/lg21018/images/overview-yoth-new.jpg');
+                background-image: url('https://your-image-url.jpg');
                 background-size: cover;
                 background-position: center;
                 border-radius: 10px;
@@ -180,9 +181,10 @@ if st.session_state.page == "Homepage":
                 left: 50%;
                 transform: translate(-50%, -50%);
                 text-align: center;
-                background-color: rgba(255, 255, 255, 0.75);
+                background-color: rgba(255, 255, 255, 0.85);
                 padding: 20px;
                 border-radius: 12px;
+                width: fit-content;
             }
             .overlay-buttons h1 {
                 font-size: 30px;
@@ -195,15 +197,20 @@ if st.session_state.page == "Homepage":
             <div class="overlay-buttons">
                 <h1>Empowering UAE Youth for the Future of Work</h1>
                 <p>Discover your strengths. Choose your path.</p>
-                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
-                    <form action="" method="post">
-                        <button type="submit" name="guest" style="padding:10px 20px; background-color:#0b6e4f; color:white; border:none; border-radius:5px;">Start as Guest</button>
-                        <button type="submit" name="login" style="padding:10px 20px; background-color:#003366; color:white; border:none; border-radius:5px;">Login / Sign Up</button>
-                    </form>
-                </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
+
+    # Create buttons using layout below the image (since HTML buttons can't change state natively)
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Start as Guest"):
+            st.session_state.current_user = "Guest"
+            set_page("Assessment")
+
+    with col2:
+        if st.button("Login / Sign Up"):
+            set_page("Login / Sign up")
 
     # Handle button logic using query params or manual button click detection
     if 'guest' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("guest"):
