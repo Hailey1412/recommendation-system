@@ -299,46 +299,48 @@ elif st.session_state.page == "Recommendations":
     st.title("Career & Skill Recommendations")
 
     st.header("Your Skill Assessment Results:")
-    # Create the results DataFrame
-    results_df = pd.DataFrame({
-        "Skill": list(st.session_state.skill_scores.keys()),
-        "Score": list(st.session_state.skill_scores.values())
-    })
-    # Convert scores to percentage and sort them
-    results_df = pd.DataFrame({
-        "Skill": list(st.session_state.skill_scores.keys()),
-        "Score": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]  # Convert to percentage
-    })
-    results_df.sort_values(by="Score", ascending=False, inplace=True)
-    
-    # Summary sentence
-    sorted_skills = results_df["Skill"].tolist()
+
+# Convert scores to percentage and sort
+results_df = pd.DataFrame({
+    "Skill": list(st.session_state.skill_scores.keys()),
+    "Score": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]  # out of 100%
+})
+results_df.sort_values(by="Score", ascending=False, inplace=True)
+
+# Summary sentence
+sorted_skills = results_df["Skill"].tolist()
+st.markdown(
+    f"According to your input in the assessment and education details, your skills from strongest to weakest are: "
+    f"**{', '.join(sorted_skills)}**."
+)
+
+# Skill descriptions
+skills_description = {
+    "Decision-Making": "Decision-making is the ability to choose between alternatives and make sound judgments.",
+    "Real-life Experience": "This refers to your practical exposure and application of knowledge in real situations.",
+    "Work Based Learning": "It is a learning approach where students gain skills through real work environments.",
+    "Teamwork Courses": "These enhance collaboration and cooperation through structured learning experiences.",
+    "Presentation Courses": "These focus on improving public speaking and visual communication skills.",
+    "Emotional Intelligence": "This is your ability to understand and manage your emotions and those of others.",
+    "Communication": "This refers to your ability to clearly express ideas and understand others.",
+    "Problem Solving Skills": "Your ability to identify issues, analyze situations, and find effective solutions.",
+    "Self-management": "Your capability to manage your time, tasks, and responsibilities efficiently.",
+    "Teamwork": "Your effectiveness in working within groups to achieve shared goals.",
+    "Professionalism": "Your demonstration of ethical behavior, responsibility, and workplace etiquette."
+}
+
+# Display each skill with color highlight
+for _, row in results_df.iterrows():
+    skill = row["Skill"]
+    score = row["Score"]
     st.markdown(
-        f"According to your input in the assessment and education details, your skills from strongest to weakest are: "
-        f"{', '.join(sorted_skills)}."
+        f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
+        f'<h4 style="color:#0066cc;margin-bottom:5px;">{skill} — {score}%</h4>'
+        f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>'
+        f'</div>',
+        unsafe_allow_html=True
     )
-    
-    # Skill details with descriptions
-    skills_description = {
-        "Decision-Making": "Decision-making is the ability to choose between alternatives and make sound judgments.",
-        "Real-life Experience": "This refers to your practical exposure and application of knowledge in real situations.",
-        "Work Based Learning": "It is a learning approach where students gain skills through real work environments.",
-        "Teamwork Courses": "These enhance collaboration and cooperation through structured learning experiences.",
-        "Presentation Courses": "These focus on improving public speaking and visual communication skills.",
-        "Emotional Intelligence": "This is your ability to understand and manage your emotions and those of others.",
-        "Communication": "This refers to your ability to clearly express ideas and understand others.",
-        "Problem Solving Skills": "Your ability to identify issues, analyze situations, and find effective solutions.",
-        "Self-management": "Your capability to manage your time, tasks, and responsibilities efficiently.",
-        "Teamwork": "Your effectiveness in working within groups to achieve shared goals.",
-        "Professionalism": "Your demonstration of ethical behavior, responsibility, and workplace etiquette."
-    }
-    
-    # Display each skill with score and definition
-    for _, row in results_df.iterrows():
-        skill = row["Skill"]
-        score = row["Score"]
-        st.markdown(f"### {skill} — {score}%")
-        st.caption(skills_description.get(skill, "No description available."))
+
     
     
     
