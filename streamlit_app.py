@@ -411,8 +411,8 @@ elif st.session_state.page == "Education Details":
      #   set_page("Recommendations")
 
 
-elif st.session_state.page == "Recommendations":
-    st.title("Career & Skill Recommendations")
+elif st.session_state.page == "Skills Results"
+    st.title("Skill Results")
 
     st.header("Your Skill Assessment Results:")
 
