@@ -486,7 +486,7 @@ else:
         st.success("Your results are saved to your profile!")
 
     col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
-    with col_1: 
+    with col_l: 
         if st.button("Back"): 
             set_page("Career Recommendations")
         
