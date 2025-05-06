@@ -292,12 +292,11 @@ elif st.session_state.page == "Recommendations":
         "Score": list(st.session_state.skill_scores.values())
     })
     
-    #for skill, score in st.session_state.skill_scores.items():
-        #    st.write(f"**{skill}**: {round(score, 2)}")
-    
+  
     # Display text results on top
-    for skill, score in st.session_state.skill_scores.items():
-        st.write(f"**{skill}**: {round(score, 2)}")
+    with st.expander("See Detailed Scores")
+        for skill, score in st.session_state.skill_scores.items():
+            st.write(f"**{skill}**: {round(score, 2)}")
     
     # Prepare DataFrame
     results_df = pd.DataFrame({
