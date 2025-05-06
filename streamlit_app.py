@@ -447,44 +447,44 @@ elif st.session_state.page == "Profile":
         "Teamwork": "Teamwork skills are fostered through collaborative projects, peer-led tasks, and group decision-making exercises where students coordinate responsibilities, resolve conflicts, and contribute toward shared goals.",
         "Professionalism": "Professionalism is demonstrated through structured interactions such as mock interviews, workplace etiquette training, or project-based work with external partners, allowing students to practice reliability, ethical behavior, and respectful communication in professional settings."
     }
-    elif st.session_state.page == "Profile":
-        if st.session_state.current_user == "Guest":
-            st.warning("You must log in to access the profile page.")
-        else:
-            st.title(f"Hi {st.session_state.current_user}")
-            st.markdown("Welcome to your profile, where you can check your results and progress.")
+
+    if st.session_state.current_user == "Guest":
+        st.warning("You must log in to access the profile page.")
+    else:
+        st.title(f"Hi {st.session_state.current_user}")
+        st.markdown("Welcome to your profile, where you can check your results and progress.")
             
-            # Saved Skill Scores
-            st.subheader("Saved Skill Scores:")
-            for skill, score in st.session_state.skill_scores.items():
-                st.write(f"**{skill}**: {round(score, 2)}")
+        # Saved Skill Scores
+        st.subheader("Saved Skill Scores:")
+        for skill, score in st.session_state.skill_scores.items():
+            st.write(f"**{skill}**: {round(score, 2)}")
             
-            # Career Recommendations with notes
-            st.subheader("Career Recommendations:")
-            for i, result in enumerate(st.session_state.career_results):
-                st.markdown(f"### {result['title']} ({result['confidence']}%)")
-                st.caption(result["description"])
-                user_note_key = f"{st.session_state.current_user}_note_{i}"
-                note = st.text_area(f"Your thoughts about {result['title']}:", key=user_note_key)
-                st.session_state[f"note_{result['title']}"] = note
+        # Career Recommendations with notes
+        st.subheader("Career Recommendations:")
+        for i, result in enumerate(st.session_state.career_results):
+            st.markdown(f"### {result['title']} ({result['confidence']}%)")
+            st.caption(result["description"])
+            user_note_key = f"{st.session_state.current_user}_note_{i}"
+            note = st.text_area(f"Your thoughts about {result['title']}:", key=user_note_key)
+            st.session_state[f"note_{result['title']}"] = note
             
-            # Course Progress with checkboxes and a progress bar
-            st.subheader("Your Course Progress:")
-            completed = 0
-            total = len(st.session_state.low_skill_courses)
+        # Course Progress with checkboxes and a progress bar
+        st.subheader("Your Course Progress:")
+        completed = 0
+        total = len(st.session_state.low_skill_courses)
             
-            for skill, url in st.session_state.low_skill_courses.items():
-                key = f"{st.session_state.current_user}_{skill}"
-                completed_course = st.checkbox(f"{skill} Course", key=key, value=st.session_state.course_progress.get(key, False))
-                st.session_state.course_progress[key] = completed_course
-                if completed_course:
-                    completed += 1
-                st.markdown(f"[Go to Course]({url})")
+        for skill, url in st.session_state.low_skill_courses.items():
+            key = f"{st.session_state.current_user}_{skill}"
+            completed_course = st.checkbox(f"{skill} Course", key=key, value=st.session_state.course_progress.get(key, False))
+            st.session_state.course_progress[key] = completed_course
+            if completed_course:
+                completed += 1
+            st.markdown(f"[Go to Course]({url})")
             
-            # Show progress bar
-            progress_ratio = completed / total if total > 0 else 0
-            st.progress(progress_ratio)
-            st.markdown(f"**Progress: {completed}/{total} courses completed**")
+        # Show progress bar
+        progress_ratio = completed / total if total > 0 else 0
+        st.progress(progress_ratio)
+        st.markdown(f"**Progress: {completed}/{total} courses completed**")
             
 
         
