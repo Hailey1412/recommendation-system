@@ -466,11 +466,10 @@ elif st.session_state.page == "Career Recommendations":
         set_page("Skills Results")
 
 
-
 elif st.session_state.page == "Course Recommendations":
     st.title("Course Recommendations")
     
-    st.subheader("Skill-Based Course Recommendations")
+    """st.subheader("Skill-Based Course Recommendations")
     for skill, url in st.session_state.low_skill_courses.items():
         st.markdown(f"###### {skill} Course: ({url})")
 
@@ -487,7 +486,7 @@ elif st.session_state.page == "Course Recommendations":
         if st.button("💾 Save Results by Signing Up"):
             set_page("Login / Sign up")
     else:
-        st.success("Your results are saved to your profile!")
+        st.success("Your results are saved to your profile!")"""
     
         
         
