@@ -463,7 +463,7 @@ elif st.session_state.page == "Career Recommendations":
     if st.button("Go to Course Recommendations"): 
         set_page("Course Recommendations")
     if st.button("Go to Skill Results"):
-        set_page("Skill Results")
+        set_page("Skills Results")
 
 elif st.session_state.pgae == "Course Recommendations":
     st.subheader("Skill-Based Course Recommendations")
@@ -478,7 +478,7 @@ elif st.session_state.pgae == "Course Recommendations":
     if st.button("Go to Career Recommendations"): 
         set_page("Career Recommendations")
     if st.button("Go to Skill Results"):
-        set_page("Skill Results")
+        set_page("Skills Results")
 
     if st.session_state.current_user == "Guest":
         if st.button("💾 Save Results by Signing Up"):
