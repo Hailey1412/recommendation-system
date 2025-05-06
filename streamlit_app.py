@@ -455,25 +455,64 @@ elif st.session_state.page == "Profile":
         st.markdown("#### Welcome to your profile! Track your skill growth, explore your career matches, and manage your learning progress.")
 
         # Tabs
-        tab1, tab2, tab3 = st.tabs(["🧠 Skill Scores", "💼 Career Recommendations", "📚 Course Recommendations"])
+        tab1, tab2, tab3 = st.tabs(["Skill Scores", "Career Recommendations", "Course Recommendations"])
 
         # --- Skill Scores ---
         with tab1:
-            st.markdown("### <span style='color:#990000'>Your Skill Scores</span>", unsafe_allow_html=True)
-            results_df = pd.DataFrame({
-                "Skill": list(st.session_state.skill_scores.keys()),
-                "Score (%)": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]
-            }).sort_values(by="Score (%)", ascending=False)
+            sst.markdown("### <span style='color:#990000'>Your Skill Scores</span>", unsafe_allow_html=True)
 
-            st.dataframe(results_df.set_index("Skill"), use_container_width=True)
+    # Convert scores to percentage and sort
+    results_df = pd.DataFrame({
+        "Skill": list(st.session_state.skill_scores.keys()),
+        "Score": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]  # out of 100%
+    })
+    results_df.sort_values(by="Score", ascending=False, inplace=True)
 
-            # Optional: Skill descriptions again
-            with st.expander("Click to view what each skill means"):
-                for skill, score in results_df.iterrows():
-                    st.markdown(
-                        f"<p style='color:#990000;'><b>{skill}</b></p><p style='margin:0;'>{skills_description.get(skill, '')}</p>",
-                        unsafe_allow_html=True
-                    )
+    # Summary sentence
+    sorted_skills = results_df["Skill"].tolist()
+    st.markdown(
+        "#### According to your assessment and education details, your skills from strongest to weakest are:"
+    )
+    st.markdown(f"**<span style='color:#990000'>{', '.join(sorted_skills)}</span>**", unsafe_allow_html=True)
+
+    # Skill descriptions
+    skills_description = {
+        "Decision-Making": "Decision-making involves engaging in tasks that require choosing between multiple options, analyzing risks, and selecting the most suitable course of action. This could include participating in simulations, case studies, or project-based scenarios that mirror real-world business or technical decisions.",
+        "Real-life Experience": "Real-world engagement includes activities that expose students to employment opportunities, helping them make informed career choices. These include alumni talks, employer seminars, and company involvement in student projects and programs.",
+        "Work Based Learning": "Work-based learning gives students hands-on experience where they apply academic and technical skills. This includes internships, part-time jobs, self-employment, freelancing, and volunteer work.",
+        "Emotional Intelligence": "Emotional intelligence includes participating in group activities, feedback sessions, or mentorship experiences that help students understand emotional responses in themselves and others, regulate behavior in stressful situations, and build empathy and interpersonal sensitivity.",
+        "Communication": "Communication skills are developed through activities such as class discussions, group projects, presentations, or report writing, which allow students to articulate their ideas clearly, adapt their message for different audiences, and engage in active listening.",
+        "Problem Solving Skills": "Problem-solving is strengthened through hands-on projects, design thinking exercises, and case-based learning where students identify challenges, evaluate options, and implement innovative solutions under constraints.",
+        "Self-management": "Self-management involves participating in time-sensitive assignments, goal-setting workshops, or multi-tasking activities that train students to organize workloads, meet deadlines, and maintain motivation and accountability without constant supervision.",
+        "Teamwork": "Teamwork skills are fostered through collaborative projects, peer-led tasks, and group decision-making exercises where students coordinate responsibilities, resolve conflicts, and contribute toward shared goals.",
+        "Professionalism": "Professionalism is demonstrated through structured interactions such as mock interviews, workplace etiquette training, or project-based work with external partners, allowing students to practice reliability, ethical behavior, and respectful communication in professional settings."
+    }
+
+    # Display detailed skill descriptions with scores
+    for _, row in results_df.iterrows():
+        skill = row["Skill"]
+        score = row["Score"]
+        st.markdown(
+            f'<h4 style="color:#990000;margin-bottom:5px;">{skill} — {score}%</h4>'
+            f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # Bar chart for skill scores
+    chart = (
+        alt.Chart(results_df)
+        .mark_bar(size=30)
+        .encode(
+            x=alt.X("Skill:N", sort="-y", title="Skill"),
+            y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 100]), title="Score (%)"),
+            color=alt.Color("Score:Q", scale=alt.Scale(range=["#f5f5dc", "#d2b48c", "#a0522d", "#990000"]))
+        )
+        .properties(height=400, width=600)
+        .configure_axis(labelFontSize=12, titleFontSize=14)
+    )
+    st.altair_chart(chart, use_container_width=True)
             # --- Career Recommendations ---
         with tab2:
             st.markdown("### <span style='color:#990000'>Your Career Matches</span>", unsafe_allow_html=True)
