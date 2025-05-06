@@ -72,19 +72,6 @@ skill_groups = {
     "Professionalism": ["Q25", "Q26", "Q27"]
 }
 
-skills_description = {
-    "Decision-Making": "Decision-making is... ",
-    "Real-life Experience": "It is...",
-    "Work Based Learning": "It is...",
-    #"Teamwork Courses": "It is...",
-    #"Presentation Courses": "It is...",
-    "Emotional Intelligence": "It is...",
-    "Communication": "It is...",
-    "Problem Solving Skills": "It is...",
-    "Self-management": "It is...",
-    "Teamwork": "It is...",
-    "Professionalism": "It is..."}
-
 skill_courses = {
     "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
     "Emotional Intelligence": "https://www.linkedin.com/learning/developing-your-emotional-intelligence",
