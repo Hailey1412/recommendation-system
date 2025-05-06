@@ -134,6 +134,8 @@ if 'career_results' not in st.session_state:
 if 'course_progress' not in st.session_state:
     st.session_state.course_progress = {}
 
+
+
 def set_page(selected):
     st.session_state.page = selected
 
@@ -259,7 +261,7 @@ elif st.session_state.page == "Assessment":
         st.write(st.session_state.assessment_responses)
 
         # Calculate skill group scores
-        skill_scores = {}
+        
         for skill, qid_list in skill_groups.items():
             values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
             skill_scores[skill] = round(np.mean(values), 2) if values else None
@@ -267,6 +269,7 @@ elif st.session_state.page == "Assessment":
 
 elif st.session_state.page == "Recommendations":
     st.title("Career Recommendations")
+    st.write(skill_scores)
     
 else:                 
     st.title("Profile")
