@@ -465,7 +465,7 @@ elif st.session_state.page == "Career Recommendations":
     if st.button("Go to Skill Results"):
         set_page("Skills Results")
 
-elif st.session_state.pgae == "Course Recommendations":
+elif st.session_state.page == "Course Recommendations":
     st.subheader("Skill-Based Course Recommendations")
 
     for skill, url in st.session_state.low_skill_courses.items():
