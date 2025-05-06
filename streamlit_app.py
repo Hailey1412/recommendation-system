@@ -378,17 +378,30 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         skill = row["Skill"]
         score = row["Score"]
         st.markdown(
-        
-            f'<h4 style="color:#0066cc;margin-bottom:5px;">{skill} — {score}%</h4>'
-            f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>'
-            f'</div>',
+            f'<h4 style="color:#800000;margin-bottom:5px;">{skill} — {score}%</h4>'
+            f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>',
             unsafe_allow_html=True
         ) # f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
 
     st.markdown("---")
     # Display bar chart below the text results
     # Display bar chart below the text results
+    # Display bar chart below the text results
+    
     chart = (
+        alt.Chart(results_df)
+        .mark_bar(size=30, color="#800000")  # Dark red/maroon hex color
+        .encode(
+            x=alt.X("Skill:N", sort="-y", title="Skill"),
+            y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 100]), title="Score (%)")
+        )
+        .properties(height=400, width=600)
+        .configure_axis(labelFontSize=12, titleFontSize=14)
+    )
+
+
+    
+    """chart = (
         alt.Chart(results_df)
         .mark_bar(size=30)
         .encode(
@@ -400,7 +413,7 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         .configure_axis(labelFontSize=12, titleFontSize=14)
     )
     
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, use_container_width=True)"""
 
     
 elif st.session_state.page == "Profile":
