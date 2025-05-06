@@ -296,7 +296,6 @@ elif st.session_state.page == "Recommendations":
         #    st.write(f"**{skill}**: {round(score, 2)}")
     
     # Column 2: Display bar chart
-    with col2:
     chart = (
         alt.Chart(results_df)
         .mark_bar(size=30)  # Make bars thicker
