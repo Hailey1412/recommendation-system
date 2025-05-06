@@ -329,6 +329,8 @@ elif st.session_state.page == "Recommendations":
     for skill, url in st.session_state.low_skill_courses.item():
         st.markdown(f"### {skill} Course")
         st.markdown(f"[Clock here to access the course] ({url})")
+
+    
         #for skill, url in st.session_state.low_skill_courses.items():
      #   key = f"{st.session_state.current_user}_{skill}"
       #  progress = st.checkbox(f"{skill} Course", key=key)
