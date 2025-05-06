@@ -521,7 +521,7 @@ else:
                 for question in questions:
                     if question in question_courses:
                         course_url = question_courses[question]
-                        course_name = courses_names.get(course_url, 'No Name')
+                        course_name = courses_names.get(course_url)
                         related_courses.append(f"[{course_name}]({course_url})")
         
                 if related_courses:
