@@ -473,8 +473,7 @@ elif st.session_state.page == "Profile":
             st.markdown(
                 "#### According to your assessment and education details, your skills from strongest to weakest are:"
             )
-            st.markdown(f"**<span style='color:#990000'>{', '.join(sorted_skills)}</span>**", unsafe_allow_html=True)
-        
+            
             # Skill descriptions
             skills_description = {
                 "Decision-Making": "Decision-making involves engaging in tasks that require choosing between multiple options, analyzing risks, and selecting the most suitable course of action. This could include participating in simulations, case studies, or project-based scenarios that mirror real-world business or technical decisions.",
@@ -488,19 +487,21 @@ elif st.session_state.page == "Profile":
                 "Professionalism": "Professionalism is demonstrated through structured interactions such as mock interviews, workplace etiquette training, or project-based work with external partners, allowing students to practice reliability, ethical behavior, and respectful communication in professional settings."
             }
         
-            # Display detailed skill descriptions with scores
+            ## Display each skill score with an expander for its definition
             for _, row in results_df.iterrows():
                 skill = row["Skill"]
                 score = row["Score"]
+        
                 st.markdown(
-                    f'<h4 style="color:#990000;margin-bottom:5px;">{skill} — {score}%</h4>'
-                    f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>',
+                    f"<h4 style='color:#990000;margin-bottom:0;'>{skill} — {score}%</h4>",
                     unsafe_allow_html=True
                 )
+                with st.expander("What does this skill mean?"):
+                    st.markdown(skills_description.get(skill, "No description available."))
         
             st.markdown("---")
         
-            # Bar chart for skill scores
+            # Bar chart for visual summary
             chart = (
                 alt.Chart(results_df)
                 .mark_bar(size=30)
@@ -513,6 +514,9 @@ elif st.session_state.page == "Profile":
                 .configure_axis(labelFontSize=12, titleFontSize=14)
             )
             st.altair_chart(chart, use_container_width=True)
+        
+            if st.button("Next"):
+                set_page("Career Recommendations")
             # --- Career Recommendations ---
         with tab2:
             st.markdown("### <span style='color:#990000'>Your Career Matches</span>", unsafe_allow_html=True)
@@ -621,3 +625,5 @@ else:
     with col_l: 
         if st.button("Back"):
             set_page("Career Recommendations")
+
+    
