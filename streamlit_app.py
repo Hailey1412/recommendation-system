@@ -435,14 +435,27 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
 
 
 elif st.session_state.page == "Profile":
+    # Skill descriptions
+    skills_description = {
+        "Decision-Making": "Decision-making involves engaging in tasks that require choosing between multiple options, analyzing risks, and selecting the most suitable course of action. This could include participating in simulations, case studies, or project-based scenarios that mirror real-world business or technical decisions.",
+        "Real-life Experience": "Real-world engagement includes activities that expose students to employment opportunities, helping them make informed career choices. These include alumni talks, employer seminars, and company involvement in student projects and programs.",
+        "Work Based Learning": "Work-based learning gives students hands-on experience where they apply academic and technical skills. This includes internships, part-time jobs, self-employment, freelancing, and volunteer work.",
+        "Emotional Intelligence": "Emotional intelligence includes participating in group activities, feedback sessions, or mentorship experiences that help students understand emotional responses in themselves and others, regulate behavior in stressful situations, and build empathy and interpersonal sensitivity.",
+        "Communication": "Communication skills are developed through activities such as class discussions, group projects, presentations, or report writing, which allow students to articulate their ideas clearly, adapt their message for different audiences, and engage in active listening.",
+        "Problem Solving Skills": "Problem-solving is strengthened through hands-on projects, design thinking exercises, and case-based learning where students identify challenges, evaluate options, and implement innovative solutions under constraints.",
+        "Self-management": "Self-management involves participating in time-sensitive assignments, goal-setting workshops, or multi-tasking activities that train students to organize workloads, meet deadlines, and maintain motivation and accountability without constant supervision.",
+        "Teamwork": "Teamwork skills are fostered through collaborative projects, peer-led tasks, and group decision-making exercises where students coordinate responsibilities, resolve conflicts, and contribute toward shared goals.",
+        "Professionalism": "Professionalism is demonstrated through structured interactions such as mock interviews, workplace etiquette training, or project-based work with external partners, allowing students to practice reliability, ethical behavior, and respectful communication in professional settings."
+    }
     if st.session_state.current_user == "Guest":
         st.warning("You must log in to access the profile page.")
+        
     else:
-        st.title(f"👋 Hi {st.session_state.current_user}")
+        st.title(f" Hi {st.session_state.current_user}")
         st.markdown("#### Welcome to your profile! Track your skill growth, explore your career matches, and manage your learning progress.")
 
         # Tabs
-        tab1, tab2, tab3 = st.tabs(["🧠 Skill Scores", "💼 Career Recommendations", "📚 Course Recommendations"])
+        tab1, tab2, tab3 = st.tabs(["Skill Scores", "Career Recommendations", "Course Recommendations"])
 
         # --- Skill Scores ---
         with tab1:
