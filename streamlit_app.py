@@ -260,17 +260,22 @@ elif st.session_state.page == "Login / Sign up":
 elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
     st.title("Assessment")
     st.write("Let's assess your skills!")
-
+    
     # Store responses in session state
     if "assessment_responses" not in st.session_state:
         st.session_state.assessment_responses = {}
-
+    
     for qid, question in questions.items():
-        response = st.slider(question, 1, 5, key=qid)
+        st.markdown(
+            f"<p style='font-size:18px; font-weight:500; margin-bottom:5px;'>{question}</p>",
+            unsafe_allow_html=True
+        )
+        response = st.slider("", 1, 5, key=qid)  # Empty string disables default label
         st.session_state.assessment_responses[qid] = response
-
+    
     if st.button("Next"):
         set_page("Education Details")
+
 
 elif st.session_state.page == "Education Details": 
     st.title("Add Your Education")
@@ -361,8 +366,8 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     # Skill descriptions
     skills_description = {
         "Decision-Making": "Decision-making involves engaging in tasks that require choosing between multiple options, analyzing risks, and selecting the most suitable course of action. This could include participating in simulations, case studies, or project-based scenarios that mirror real-world business or technical decisions.",
-        "Real-life Experience": "Real-world engagement includes activities that allow students to learn about and understand available opportunities which will allow them to make informed decisions regarding their employment. It includes activities like witnessing alumni visit to talk about their career paths and available opportunities in their company. It may also include listening to employers’ seminars about employment opportunities and skills requirements for these opportunities. Additionally, it could include experiencing employer’s and companies’ participation in project presentations and program delivery.",
-        "Work Based Learning": "Work-based learning is an educational strategy that provides students with real-life work experience during while they can apply their technical and academic skills. It is a major opportunity for students to develop their employability. Work-based learning activities include short-term (6-12 weeks) or long-term (full academic year) internship work placement, it also includes part-time jobs, self-employment, freelancing or volunteer work.",
+        "Real-life Experience": "Real-world engagement includes activities that expose students to employment opportunities, helping them make informed career choices. These include alumni talks, employer seminars, and company involvement in student projects and programs.",
+        "Work Based Learning": "Work-based learning gives students hands-on experience where they apply academic and technical skills. This includes internships, part-time jobs, self-employment, freelancing, and volunteer work.",
         "Emotional Intelligence": "Emotional intelligence includes participating in group activities, feedback sessions, or mentorship experiences that help students understand emotional responses in themselves and others, regulate behavior in stressful situations, and build empathy and interpersonal sensitivity.",
         "Communication": "Communication skills are developed through activities such as class discussions, group projects, presentations, or report writing, which allow students to articulate their ideas clearly, adapt their message for different audiences, and engage in active listening.",
         "Problem Solving Skills": "Problem-solving is strengthened through hands-on projects, design thinking exercises, and case-based learning where students identify challenges, evaluate options, and implement innovative solutions under constraints.",
