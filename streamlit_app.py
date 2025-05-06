@@ -516,8 +516,16 @@ else:
     
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More"):
-        for name, url in courses_names.items():
-            st.markdown(f"- **{name}** — [View Course]({url})")
+        if not st.session_state.get("low_q_courses"):
+            st.info("No personalized course recommendations. Great job! You scored well in all areas.")
+        else:
+            st.subheader("Based on your responses, we recommend the following:")
+            for qid, course_link in st.session_state.low_q_courses.items():
+                question_text = questions.get(qid, f"Question {qid}")
+                st.markdown(f"**{question_text}**")
+                st.markdown(f"[Recommended Course]({course_link})", unsafe_allow_html=True)
+            for name, url in courses_names.items():
+                st.markdown(f"- **{name}** — [View Course]({url})")
     
         
     # Account-based saving
