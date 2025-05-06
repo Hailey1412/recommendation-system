@@ -156,7 +156,7 @@ if st.session_state.page == "Homepage":
     We have created a personalized AI-powered platform designed to help youth in the UAE discover their strengths, explore careers, and find courses to grow.  
     Take our skills-based assessment and receive career and course recommendations tailored to your profile.
     """)
-    st.markdown("#### 🧠 Skills → 📝 Assessment → 💼 Career → 🎓 Courses")
+    st.markdown("#### Skills →  Assessment → Career →  Courses")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -283,7 +283,7 @@ elif st.session_state.page == "Assessment":
 
 
 elif st.session_state.page == "Recommendations":
-    st.title("🔍 Career & Skill Recommendations")
+    st.title("Career & Skill Recommendations")
 
     st.header("Your Skill Assessment Results:")
     # Create the results DataFrame
@@ -352,21 +352,40 @@ elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
         st.warning("You must log in to access the profile page.")
     else:
-        st.title(f"📘 Profile - {st.session_state.current_user}")
+        st.title(f"Hi {st.session_state.current_user}")
+        st.markdown("Welcome to your profile, where you can check your results and progress.")
+        
+        # Saved Skill Scores
         st.subheader("Saved Skill Scores:")
         for skill, score in st.session_state.skill_scores.items():
             st.write(f"**{skill}**: {round(score, 2)}")
-
+        
+        # Career Recommendations with notes
         st.subheader("Career Recommendations:")
-        for result in st.session_state.career_results:
-            st.markdown(f"**{result['title']}** ({result['confidence']}%)")
+        for i, result in enumerate(st.session_state.career_results):
+            st.markdown(f"### {result['title']} ({result['confidence']}%)")
             st.caption(result["description"])
-
+            user_note_key = f"{st.session_state.current_user}_note_{i}"
+            note = st.text_area(f"Your thoughts about {result['title']}:", key=user_note_key)
+            st.session_state[f"note_{result['title']}"] = note
+        
+        # Course Progress with checkboxes and a progress bar
         st.subheader("Your Course Progress:")
+        completed = 0
+        total = len(st.session_state.low_skill_courses)
+        
         for skill, url in st.session_state.low_skill_courses.items():
             key = f"{st.session_state.current_user}_{skill}"
-            progress = st.session_state.course_progress.get(key, False)
-            st.checkbox(f"{skill} Course", value=progress, key=key, help="Check if you’ve completed this course.")
-            st.markdown(f"[Course Link]({url})")
-
-    
+            completed_course = st.checkbox(f"{skill} Course", key=key, value=st.session_state.course_progress.get(key, False))
+            st.session_state.course_progress[key] = completed_course
+            if completed_course:
+                completed += 1
+            st.markdown(f"[Go to Course]({url})")
+        
+        # Show progress bar
+        progress_ratio = completed / total if total > 0 else 0
+        st.progress(progress_ratio)
+        st.markdown(f"**Progress: {completed}/{total} courses completed**")
+        
+        
+            
