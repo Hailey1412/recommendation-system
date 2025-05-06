@@ -554,7 +554,7 @@ elif st.session_state.page == "Profile":
         progress_ratio = completed / total if total > 0 else 0
         st.progress(progress_ratio)
         st.markdown(f"**Progress: {completed}/{total} courses completed**")
-elif st.session_state.page == "Career Recommendations": "Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendations"
+elif st.session_state.page == "Career Recommendations":
     st.write("career rec")
 elif st.session_state.pgae == "Course Recommendations":
     st.write("coruse rec")
