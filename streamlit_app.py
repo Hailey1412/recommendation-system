@@ -161,6 +161,10 @@ if 'career_results' not in st.session_state:
     st.session_state.career_results = []
 if 'course_progress' not in st.session_state:
     st.session_state.course_progress = {}
+if "assessment_responses" not in st.session_state:
+    st.session_state.assessment_responses = {}
+else:
+    st.warning("No assessment responses found.")
 
 def set_page(selected):
     st.session_state.page = selected
@@ -289,11 +293,6 @@ elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Pro
     st.title("Skills Assessment")
     st.subheader("Let's assess your skills!")
     
-    # Store responses in session state
-    if "assessment_responses" not in st.session_state:
-        st.session_state.assessment_responses = {}
-    else:
-        st.warning("No assessment responses found.")
     
     for qid, question in questions.items():
         st.markdown(
