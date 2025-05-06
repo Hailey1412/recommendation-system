@@ -170,7 +170,7 @@ if st.session_state.page == "Homepage":
                     position: relative;
                     width: 100%;
                     height: 500px;
-                    background-image: url('https://your-image-url.jpg');
+                    background-image: url('https://uae-voice.net/wp-content/uploads/2023/09/image-2-1.jpg');
                     background-size: cover;
                     background-position: center;
                     border-radius: 10px;
@@ -201,14 +201,15 @@ if st.session_state.page == "Homepage":
             </div>
         """, unsafe_allow_html=True)
     
-        # Create buttons using layout below the image (since HTML buttons can't change state natively)
-        col1, col2 = st.columns(2)
-        with col1:
+        # Create 3 columns: left, center, right
+        left_col, center_col, right_col = st.columns([1, 2, 1])
+        
+        with center_col:
+            st.markdown("### Choose an option:")
             if st.button("Start as Guest"):
                 st.session_state.current_user = "Guest"
                 set_page("Assessment")
-    
-        with col2:
+        
             if st.button("Login / Sign Up"):
                 set_page("Login / Sign up")
 
