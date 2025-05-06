@@ -73,42 +73,72 @@ skill_groups = {
 }
 
 skill_courses = {
-    "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
+    "Decision-Making": "https://www.edx.org/learn/critical-thinking-skills/rochester-institute-of-technology-critical-thinking-problem-solving?utm_source=chatgpt.com",
     "Emotional Intelligence": "https://www.linkedin.com/learning/developing-your-emotional-intelligence",
-    "Real-life Experience": "https://www.coursera.org/learn/experiential-learning",
-    "Communication": "https://www.coursera.org/learn/successful-communication",
+    "Real-life Experience": "https://www.coursera.org/specializations/introduction-to-learning-experience-design?utm_source=chatgpt.com",
+    "Communication": "https://www.coursera.org/learn/wharton-communication-skills?utm_source=chatgpt.com",
     "Self-management": "https://www.linkedin.com/learning/time-management-fundamentals",
-    "Teamwork": "https://www.coursera.org/learn/teamwork-skills",
-    "Professionalism": "https://www.edx.org/course/professional-skills-for-the-workplace"
+    "Teamwork": "https://www.coursera.org/learn/teamwork-skills-effective-communication?utm_source=chatgpt.com",
+    "Professionalism": "https://www.edx.org/certificates/professional-certificate/fullbridgex-skills-for-success?utm_source=chatgpt.com"
 }   # (your skill_courses dictionary)
+
+courses_names = {
+    "The Self-Awareness Journey": "https://theselfawarenessjourney.com/courses/tsaj",
+    "Reflection for Experiential Learning – Boston University": "https://www.bu.edu/ctl/ctl_resource/reflection-for-experiential-learning/",
+    "Career Planning: A Pathway to Employment – Coursera": "https://www.coursera.org/learn/career-planning",
+    "Career Planning Channel – Skillsoft": "https://www.skillsoft.com/channel/career-planning-3c623b30-e71c-11e6-9835-f723b46a2688",
+    "Arqus Alumni Talks Series": "https://arqus-alliance.eu/news/arqus-alumni-talks/",
+    "SHRM Employer Seminars": "https://www.shrm.org/events-education/education/seminars",
+    "Networking and Mentorship – edX": "https://www.edx.org/course/networking-and-mentorship",
+    "Employer-Driven Academic Projects Guide – Qollabb": "https://blog.qollabb.com/2025-guide-employer-driven-academic-projects/",
+    "Organizational Structure Courses – Coursera": "https://www.coursera.org/courses?query=organizational%20structure",
+    "Improve Your Teamwork Skills – LinkedIn Learning": "https://www.linkedin.com/learning/paths/improve-your-teamwork-skills?u=2133116",
+    "Presentation Skills Training – Udemy": "https://www.udemy.com/topic/presentation-skills/?srsltid=AfmBOoqD8aAe2Lt4buVBW23bE5LUpKzdwGsmtTKu9NSOilgRr1YZZs5B",
+    "Emotional Awareness and Control – Udemy": "https://www.udemy.com/course/awareness-and-emotional-control/?srsltid=AfmBOoormOPq1z4tsNpMYtJB9QjufF0fxs9J7QWR5L2CCTGBJ38IOmZb&couponCode=ST6MT60525G1",
+    "Micro Expressions Training Tools – Paul Ekman": "https://www.paulekman.com/micro-expressions-training-tools/",
+    "Managing Emotions in Times of Uncertainty & Stress – Coursera": "https://www.coursera.org/learn/managing-emotions-uncertainty-stress",
+    "Supporting Others – Center for Emotional Education": "https://www.centerforemotionaleducation.com/supporting-others-1",
+    "Teaching Students to Ask Their Own Questions – Harvard": "https://www.gse.harvard.edu/professional-education/program/teaching-students-ask-their-own-questions-best-practices-question",
+    "Communication Skills Courses – Coursera": "https://www.coursera.org/courses?query=communication%20skills",
+    "Creative Problem Solving – Coursera": "https://www.coursera.org/learn/problem-solving",
+    "Work Smarter, Not Harder: Time Management for Personal & Professional Productivity – Coursera": "https://www.coursera.org/learn/work-smarter-not-harder",
+    "Time Management Fundamentals – LinkedIn Learning": "https://www.linkedin.com/learning/time-management-fundamentals/welcome?u=2133116",
+    "Teamwork Skills: Communicating Effectively in Groups – Coursera": "https://www.coursera.org/learn/teamwork-skills-effective-communication",
+    "Inclusive Leadership for a Diverse Workplace – Harvard": "https://pll.harvard.edu/subject/workplace-culture",
+    "Essentials of Team Collaboration – LinkedIn Learning": "https://www.linkedin.com/learning/essentials-of-team-collaboration/welcome-to-essentials-of-team-collaboration?u=2133116",
+    "Giving and Receiving Feedback – Coursera": "https://www.coursera.org/learn/feedback",
+    "Communication in the 21st Century Workplace – Coursera": "https://www.coursera.org/learn/communication-in-the-workplace",
+    "Adaptability and Resiliency – Coursera": "https://www.coursera.org/learn/adaptability-and-resiliency"
+}
+
 question_courses = {
-    "Q1": "https://www.coursera.org/specializations/career-success",
-    "Q2": "https://www.coursera.org/specializations/career-success",
-    "Q3": "https://www.coursera.org/specializations/career-success",
-    "Q4": "https://www.coursera.org/specializations/career-success",
-    "Q5": "https://www.edx.org/course/networking-and-mentorship",
-    "Q6": "https://www.edx.org/course/networking-and-mentorship",
+    "Q1": "https://theselfawarenessjourney.com/courses/tsaj",
+    "Q2": "https://www.bu.edu/ctl/ctl_resource/reflection-for-experiential-learning/",
+    "Q3": "https://www.coursera.org/learn/career-planning",
+    "Q4": "https://www.skillsoft.com/channel/career-planning-3c623b30-e71c-11e6-9835-f723b46a2688",
+    "Q5": "https://arqus-alliance.eu/news/arqus-alumni-talks/",
+    "Q6": "https://www.shrm.org/events-education/education/seminars",
     "Q7": "https://www.edx.org/course/networking-and-mentorship",
-    "Q8": "https://www.coursera.org/learn/internship-career-preparation",
-    "Q9": "https://www.coursera.org/learn/internship-career-preparation",
-    "Q10": "https://www.futurelearn.com/courses/collaborative-working-in-a-remote-team",
-    "Q11": "https://www.edx.org/course/effective-presentation-and-communication-skills",
-    "Q12": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
-    "Q13": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
-    "Q14": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
-    "Q15": "https://www.futurelearn.com/courses/emotional-intelligence-at-work",
-    "Q16": "https://www.edx.org/course/communication-skills-for-bridging-divides",
-    "Q17": "https://www.edx.org/course/communication-skills-for-bridging-divides",
-    "Q18": "https://www.coursera.org/learn/creative-problem-solving",
-    "Q19": "https://www.coursera.org/learn/creative-problem-solving",
+    "Q8": "https://blog.qollabb.com/2025-guide-employer-driven-academic-projects/",
+    "Q9": "https://www.coursera.org/courses?query=organizational%20structure",
+    "Q10": "https://www.linkedin.com/learning/paths/improve-your-teamwork-skills?u=2133116",
+    "Q11": "https://www.udemy.com/topic/presentation-skills/?srsltid=AfmBOoqD8aAe2Lt4buVBW23bE5LUpKzdwGsmtTKu9NSOilgRr1YZZs5B",
+    "Q12": "https://www.udemy.com/course/awareness-and-emotional-control/?srsltid=AfmBOoormOPq1z4tsNpMYtJB9QjufF0fxs9J7QWR5L2CCTGBJ38IOmZb&couponCode=ST6MT60525G1",
+    "Q13": "https://www.paulekman.com/micro-expressions-training-tools/",
+    "Q14": "https://www.coursera.org/learn/managing-emotions-uncertainty-stress",
+    "Q15": "https://www.centerforemotionaleducation.com/supporting-others-1",
+    "Q16": "https://www.gse.harvard.edu/professional-education/program/teaching-students-ask-their-own-questions-best-practices-question",
+    "Q17": "https://www.coursera.org/courses?query=communication%20skills",
+    "Q18": "https://www.coursera.org/learn/problem-solving",
+    "Q19": "https://www.coursera.org/learn/problem-solving",
     "Q20": "https://www.coursera.org/learn/work-smarter-not-harder",
-    "Q21": "https://www.coursera.org/learn/work-smarter-not-harder",
-    "Q22": "https://www.coursera.org/learn/teamwork-skills",
-    "Q23": "https://www.coursera.org/learn/teamwork-skills",
-    "Q24": "https://www.coursera.org/learn/teamwork-skills",
-    "Q25": "https://www.edx.org/course/professional-skills-for-the-workplace",
-    "Q26": "https://www.edx.org/course/professional-skills-for-the-workplace",
-    "Q27": "https://www.edx.org/course/professional-skills-for-the-workplace"
+    "Q21": "https://www.linkedin.com/learning/time-management-fundamentals/welcome?u=2133116",
+    "Q22": "https://www.coursera.org/learn/teamwork-skills-effective-communication",
+    "Q23": "https://pll.harvard.edu/subject/workplace-culture",
+    "Q24": "https://www.linkedin.com/learning/essentials-of-team-collaboration/welcome-to-essentials-of-team-collaboration?u=2133116",
+    "Q25": "https://www.coursera.org/learn/feedback",
+    "Q26": "https://www.coursera.org/learn/communication-in-the-workplace",
+    "Q27": "https://www.coursera.org/learn/adaptability-and-resiliency"
 }  # (your question_courses dictionary)
 
 
@@ -485,20 +515,17 @@ else:
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
     
-    # More personalized section
+    personalized_df = pd.DataFrame([
+        {"Course Name": name, "Link": f"[View Course]({url})"}
+        for name, url in personalized_courses.items()
+    ])
+    
+    # Display inside the expander
     with st.expander("📌 More Personalized Course Recommendations"):
         st.markdown("<h4 style='color:#990000;'>Based on Your Individual Responses:</h4>", unsafe_allow_html=True)
-        for qid, url in st.session_state.low_q_courses.items():
-            st.markdown(
-                f"""
-                <div style='margin-bottom:10px;'>
-                    <p style='margin:0;'><strong>{questions[qid]}</strong></p>
-                    <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>🔗 View Course</a>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.dataframe(personalized_df, use_container_width=True)
     
+        
     # Account-based saving
     st.markdown("<br>", unsafe_allow_html=True)
     if st.session_state.current_user == "Guest":
