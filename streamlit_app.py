@@ -318,38 +318,23 @@ elif st.session_state.page == "Recommendations":
     )
     
     st.altair_chart(chart, use_container_width=True)
-    #chart = (
-       # alt.Chart(results_df)
-      #  .mark_bar(size=30)  # Make bars thicker
-      #  .encode(
-       #     x=alt.X("Score:Q", scale=alt.Scale(domain=[0, 5]), title="Score"),
-       #     y=alt.Y("Skill:N", sort="-x", title="Skill"),
-       #     color=alt.Color("Score:Q", scale=alt.Scale(scheme="blues"))
-    #    )
-       # .properties(height=400, width=400)  # Bigger chart
-      #  .configure_axis(labelFontSize=12, titleFontSize=14)
-   # )
-   # st.altair_chart(chart, use_container_width=True)
-
-   # for skill, score in st.session_state.skill_scores.items():
-     #   st.write(f"**{skill}**: {round(score, 2)}")
-
+   
     st.subheader("Top 5 Career Matches:")
     for result in st.session_state.career_results:
-        st.markdown(f"**{result['title']}** ({result['confidence']}%)")
+        st.header(f"**{result['title']}** ")#({result['confidence']}%)")
         st.caption(result["description"])
 
-    st.subheader("🎓 Skill-Based Course Recommendations")
+    st.subheader("Skill-Based Course Recommendations")
     for skill, url in st.session_state.low_skill_courses.items():
         key = f"{st.session_state.current_user}_{skill}"
-        progress = st.checkbox(f"{skill} Course", key=key)
+        progress = st.markdown(f"{skill} Course", key=key)
         if st.session_state.current_user != "Guest":
             st.session_state.course_progress[key] = progress
         st.markdown(f"[Course Link]({url})")
 
-    st.subheader("🧠 Specific Courses for Low Responses")
-    for qid, url in st.session_state.low_q_courses.items():
-        st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
+    st.expander("More Personlized Course Recommendations"):
+        for qid, url in st.session_state.low_q_courses.items():
+            st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
 
     if st.session_state.current_user == "Guest":
         if st.button("💾 Save Results by Signing Up"):
