@@ -334,12 +334,12 @@ elif st.session_state.page == "Recommendations":
         skill = row["Skill"]
         score = row["Score"]
         st.markdown(
-            f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
+        
             f'<h4 style="color:#0066cc;margin-bottom:5px;">{skill} — {score}%</h4>'
             f'<p style="margin:0;">{skills_description.get(skill, "No description available.")}</p>'
             f'</div>',
             unsafe_allow_html=True
-        )
+        ) # f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
 
     
     
