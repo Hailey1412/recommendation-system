@@ -514,11 +514,12 @@ else:
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+
     
-    with st.expander("📌 More Personalized Course Recommendations"):
-    st.markdown("<h4 style='color:#990000;'>Based on Your Individual Responses:</h4>", unsafe_allow_html=True)
-    for name, url in personalized_courses.items():
-        st.markdown(f"- **{name}** — [View Course]({url})")
+    st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
+    with st.expander("More"):
+        for name, url in courses_names.items():
+            st.markdown(f"- **{name}** — [View Course]({url})")
     
         
     # Account-based saving
