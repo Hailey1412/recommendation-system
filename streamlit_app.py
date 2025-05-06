@@ -62,8 +62,6 @@ skill_groups = {
     "Decision-Making": ["Q1", "Q2", "Q3", "Q4"],
     "Real-life Experience": ["Q5", "Q6", "Q7"],
     "Work Based Learning": ["Q8", "Q9"],
-   # "Teamwork Courses": ["Q10"],
-   # "Presentation Courses": ["Q11"],
     "Emotional Intelligence": ["Q12", "Q13", "Q14", "Q15"],
     "Communication": ["Q16", "Q17"],
     "Problem Solving Skills": ["Q18", "Q19"],
@@ -506,7 +504,7 @@ else:
         f"""
         <div style='margin-bottom:15px; padding:10px; background-color:#f9f9f9; border-left:5px solid #990000; border-radius:5px;'>
             <p style='margin:0;'><strong style='color:#990000;'>{skill}</strong></p>
-            <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>📘 View Recommended Course</a>
+            <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>🔗 View Recommended Course</a>
         </div>
         """,
         unsafe_allow_html=True
@@ -525,7 +523,7 @@ else:
     # Account-based saving
     st.markdown("<br>", unsafe_allow_html=True)
     if st.session_state.current_user == "Guest":
-        if st.button("💾 Save Results by Signing Up"):
+        if st.button("Save Results by Signing Up"):
             set_page("Login / Sign up")
     else:
         st.success("✅ Your results are saved to your profile!")
