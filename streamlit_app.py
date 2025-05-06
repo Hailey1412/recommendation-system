@@ -332,7 +332,7 @@ elif st.session_state.page == "Recommendations":
             st.session_state.course_progress[key] = progress
         st.markdown(f"[Course Link]({url})")
 
-    st.expander("More Personlized Course Recommendations"):
+    with st.expander("More Personlized Course Recommendations"):
         for qid, url in st.session_state.low_q_courses.items():
             st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
 
