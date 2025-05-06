@@ -517,7 +517,7 @@ else:
     
     personalized_df = pd.DataFrame([
         {"Course Name": name, "Link": f"[View Course]({url})"}
-        for name, url in personalized_courses.items()
+        for name, url in courses_names.items()
     ])
     
     # Display inside the expander
@@ -540,27 +540,6 @@ else:
         if st.button("⬅️ Back"):
             set_page("Career Recommendations")
 
-    
-    """st.title("Course Recommendations")
-    st.subheader("Skill-Based Course Recommendations")
-    for skill, url in st.session_state.low_skill_courses.items():
-        st.markdown(f"###### {skill} Course: ({url})")
-
-    with st.expander("More Personlized Course Recommendations"):
-        for qid, url in st.session_state.low_q_courses.items():
-            st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
-
-    if st.session_state.current_user == "Guest":
-        if st.button("Save Results by Signing Up"):
-            set_page("Login / Sign up")
-    else:
-        st.success("Your results are saved to your profile!")
-
-    col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
-    with col_l: 
-        if st.button("Back"): 
-            set_page("Career Recommendations")"""
-        
         
     
         
