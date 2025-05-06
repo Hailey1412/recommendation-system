@@ -356,83 +356,8 @@ elif st.session_state.page == "Education Details":
 
         set_page("Skills Results")
 
-    # Ask for education info
-    #st.header("🎓 2. Add Your Education")
-    
-    #degree_options = ["High School Diploma", "Associate's", "Certification", "Bachelor's", "Master's", "PhD"]
-    #field_options = list(mlb_field.classes_)
-    
-    # Add Education Entry Button
-    #if st.button("➕ Add Education"):
-    #    st.session_state.education_blocks.append({"degree": "", "field": ""})
-    
-    # Display Education Inputs
-    #for i in range(len(st.session_state.education_blocks)):
-    #    edu = st.session_state.education_blocks[i]
-     #   st.markdown(f"##### 🎓 Education {i+1}")
-      #  col1, col2, col3 = st.columns([4, 4, 1])
-    
-     #   with col1:
-      #      degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
-      #  with col2:
-       #     if degree != "High School Diploma":
-        #        field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
-         #   else:
-          #      field = None
-        #with col3:
-           # remove = st.button("X", key=f"remove_{i}")
-            #if remove:
-             #   st.session_state.education_blocks.pop(i)
-    
-        # Update session state
-        #if i < len(st.session_state.education_blocks):
-         #   st.session_state.education_blocks[i] = {"degree": degree, "field": field}
-    
-    #st.markdown("---")
-    
-    # Submit Button
-    #if st.button(" Submit Assessment"):
-        # Skill averaging
-      #  skill_scores = {}
-        #for skill, q_ids in skill_groups.items():
-           # skill_scores[skill] = np.mean([st.session_state.assessment_responses[q] for q in q_ids])
-
-        #st.session_state.skill_scores = skill_scores
-
-        # Prepare model input
-      #  skill_input = [skill_scores[skill] for skill in model_skill_order]
-      #  degrees = [edu["degree"] for edu in st.session_state.education_blocks]
-       # fields = [edu["field"] for edu in st.session_state.education_blocks]
-      #  degree_encoded = mlb_degree.transform([degrees])
-      #  field_encoded = mlb_field.transform([fields])
-
-      #  final_input = np.hstack([skill_input, degree_encoded[0], field_encoded[0]])
-      #  predictions = model.predict_proba([final_input])[0]
-      #  top5_idx = predictions.argsort()[-5:][::-1]
-      #  job_titles = le.inverse_transform(top5_idx)
-        #confidences = predictions[top5_idx]
-
-      #  st.session_state.career_results = [
-          #  {"title": job, "confidence": round(conf*100, 2), "description": job_descriptions_dict.get(job, "No description")}
-          #  for job, conf in zip(job_titles, confidences)
-       # ]
-
-        # Prepare low-score skills and questions
-       # low_skill_courses = {s: skill_courses[s] for s, score in skill_scores.items() if score <= 3 and s in skill_courses}
-       # low_q_courses = {
-        #    q: question_courses[q]
-        #    for q, score in st.session_state.assessment_responses.items() if score <= 3 and q in question_courses
-      #  }
-      #  st.session_state.low_skill_courses = low_skill_courses
-      #  st.session_state.low_q_courses = low_q_courses
-
-     #   set_page("Recommendations")
-
-
 elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
-    st.title("Skill Results")
-
-    st.header("Your Skill Assessment Results:")
+    st.title("Your Skill Assessment Results")
 
     # Convert scores to percentage and sort
     results_df = pd.DataFrame({
@@ -453,8 +378,6 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         "Decision-Making": "Decision-making is the ability to choose between alternatives and make sound judgments.",
         "Real-life Experience": "This refers to your practical exposure and application of knowledge in real situations.",
         "Work Based Learning": "It is a learning approach where students gain skills through real work environments.",
-        "Teamwork Courses": "These enhance collaboration and cooperation through structured learning experiences.",
-        "Presentation Courses": "These focus on improving public speaking and visual communication skills.",
         "Emotional Intelligence": "This is your ability to understand and manage your emotions and those of others.",
         "Communication": "This refers to your ability to clearly express ideas and understand others.",
         "Problem Solving Skills": "Your ability to identify issues, analyze situations, and find effective solutions.",
@@ -474,14 +397,6 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
             f'</div>',
             unsafe_allow_html=True
         ) # f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
-
-    
-    
-    
-    # Display text results on top
-    with st.expander("See Detailed Scores"):
-        for skill, score in st.session_state.skill_scores.items():
-            st.write(f"**{skill}**: {round(score, 2)}")
     
     # Display bar chart below the text results
     chart = (
@@ -497,27 +412,6 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     )
     
     st.altair_chart(chart, use_container_width=True)
-   
-    st.header("Top 5 Career Matches:")
-    for result in st.session_state.career_results:
-        st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
-        st.caption(result["description"])
-
-    st.subheader("Skill-Based Course Recommendations")
-
-    for skill, url in st.session_state.low_skill_courses.items():
-        st.markdown(f"###### {skill} Course: ({url})")
-
-
-    with st.expander("More Personlized Course Recommendations"):
-        for qid, url in st.session_state.low_q_courses.items():
-            st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
-
-    if st.session_state.current_user == "Guest":
-        if st.button("💾 Save Results by Signing Up"):
-            set_page("Login / Sign up")
-    else:
-        st.success("Your results are saved to your profile!")
     
 elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
@@ -558,9 +452,27 @@ elif st.session_state.page == "Profile":
         st.progress(progress_ratio)
         st.markdown(f"**Progress: {completed}/{total} courses completed**")
 elif st.session_state.page == "Career Recommendations":
-    st.write("career rec")
+    st.header("Top 5 Career Matches:")
+    for result in st.session_state.career_results:
+        st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
+        st.caption(result["description"])
+
 elif st.session_state.pgae == "Course Recommendations":
-    st.write("coruse rec")
+    st.subheader("Skill-Based Course Recommendations")
+
+    for skill, url in st.session_state.low_skill_courses.items():
+        st.markdown(f"###### {skill} Course: ({url})")
+
+
+    with st.expander("More Personlized Course Recommendations"):
+        for qid, url in st.session_state.low_q_courses.items():
+            st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
+
+    if st.session_state.current_user == "Guest":
+        if st.button("💾 Save Results by Signing Up"):
+            set_page("Login / Sign up")
+    else:
+        st.success("Your results are saved to your profile!")
     
         
         
