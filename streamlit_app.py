@@ -154,7 +154,7 @@ def set_page(selected):
 st.sidebar.title("Navigation")
 sidebar_selection = st.sidebar.radio("Go to", 
     ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
-    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"]].index(st.session_state.page),
+    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"].index(st.session_state.page),
     key="sidebar_page"
 )
 
