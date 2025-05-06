@@ -438,40 +438,80 @@ elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
         st.warning("You must log in to access the profile page.")
     else:
-        st.title(f"Hi {st.session_state.current_user}")
-        st.markdown("Welcome to your profile, where you can check your results and progress.")
-        
-        # Saved Skill Scores
-        st.subheader("Saved Skill Scores:")
-        for skill, score in st.session_state.skill_scores.items():
-            st.write(f"**{skill}**: {round(score, 2)}")
-        
-        # Career Recommendations with notes
-        st.subheader("Career Recommendations:")
-        for i, result in enumerate(st.session_state.career_results):
-            st.markdown(f"### {result['title']} ({result['confidence']}%)")
-            st.caption(result["description"])
-            user_note_key = f"{st.session_state.current_user}_note_{i}"
-            note = st.text_area(f"Your thoughts about {result['title']}:", key=user_note_key)
-            st.session_state[f"note_{result['title']}"] = note
-        
-        # Course Progress with checkboxes and a progress bar
-        st.subheader("Your Course Progress:")
-        completed = 0
-        total = len(st.session_state.low_skill_courses)
-        
-        for skill, url in st.session_state.low_skill_courses.items():
-            key = f"{st.session_state.current_user}_{skill}"
-            completed_course = st.checkbox(f"{skill} Course", key=key, value=st.session_state.course_progress.get(key, False))
-            st.session_state.course_progress[key] = completed_course
-            if completed_course:
-                completed += 1
-            st.markdown(f"[Go to Course]({url})")
-        
-        # Show progress bar
-        progress_ratio = completed / total if total > 0 else 0
-        st.progress(progress_ratio)
-        st.markdown(f"**Progress: {completed}/{total} courses completed**")
+        st.title(f"👋 Hi {st.session_state.current_user}")
+        st.markdown("#### Welcome to your profile! Track your skill growth, explore your career matches, and manage your learning progress.")
+
+        # Tabs
+        tab1, tab2, tab3 = st.tabs(["🧠 Skill Scores", "💼 Career Recommendations", "📚 Course Recommendations"])
+
+        # --- Skill Scores ---
+        with tab1:
+            st.markdown("### <span style='color:#990000'>Your Skill Scores</span>", unsafe_allow_html=True)
+            results_df = pd.DataFrame({
+                "Skill": list(st.session_state.skill_scores.keys()),
+                "Score (%)": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]
+            }).sort_values(by="Score (%)", ascending=False)
+
+            st.dataframe(results_df.set_index("Skill"), use_container_width=True)
+
+            # Optional: Skill descriptions again
+            with st.expander("Click to view what each skill means"):
+                for skill, score in results_df.iterrows():
+                    st.markdown(
+                        f"<p style='color:#990000;'><b>{skill}</b></p><p style='margin:0;'>{skills_description.get(skill, '')}</p>",
+                        unsafe_allow_html=True
+                    )
+
+        # --- Career Recommendations ---
+        with tab2:
+            st.markdown("### <span style='color:#990000'>Your Career Matches</span>", unsafe_allow_html=True)
+            for i, result in enumerate(st.session_state.career_results):
+                st.markdown(f"<h4 style='color:#990000;'>{result['title']} ({result['confidence']}%)</h4>", unsafe_allow_html=True)
+                st.caption(result["description"])
+                note_key = f"{st.session_state.current_user}_note_{i}"
+                st.session_state[f"note_{result['title']}"] = st.text_area(
+                    f"✍️ Your thoughts about {result['title']}:",
+                    key=note_key,
+                    placeholder="Write your reflections or plans here..."
+                )
+
+        # --- Course Recommendations ---
+        with tab3:
+            st.markdown("### <span style='color:#990000'>Track Your Learning</span>", unsafe_allow_html=True)
+
+            # Merge skill-based and personalized course recommendations
+            all_courses = {}
+
+            # Skill-based
+            for skill, url in st.session_state.low_skill_courses.items():
+                all_courses[url] = skill
+
+            # Personalized (avoid duplicate URLs)
+            for skill, questions in skill_groups.items():
+                if skill in st.session_state.low_skill_courses:
+                    for question in questions:
+                        if question in question_courses:
+                            url = question_courses[question]
+                            all_courses.setdefault(url, courses_names.get(question, "Unnamed Course"))
+
+            # Track progress
+            completed = 0
+            total = len(all_courses)
+
+            for url, course_name in all_courses.items():
+                key = f"{st.session_state.current_user}_{course_name}"
+                is_checked = st.checkbox(course_name, key=key, value=st.session_state.course_progress.get(key, False))
+                st.session_state.course_progress[key] = is_checked
+                st.markdown(f"[🔗 Open Course]({url})", unsafe_allow_html=True)
+                if is_checked:
+                    completed += 1
+                st.markdown("---")
+
+            # Progress bar
+            ratio = completed / total if total > 0 else 0
+            st.progress(ratio)
+            st.markdown(f"<p style='color:#990000'><b>Progress: {completed}/{total} courses completed</b></p>", unsafe_allow_html=True)
+
         
 elif st.session_state.page == "Career Recommendations":
     st.header("Top 5 Career Matches:")
