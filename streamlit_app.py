@@ -285,7 +285,7 @@ elif st.session_state.page == "Assessment":
 elif st.session_state.page == "Recommendations":
     st.title("🔍 Career & Skill Recommendations")
 
-    st.subheader("Your Skill Assessment Results:")
+    st.header("Your Skill Assessment Results:")
     # Create the results DataFrame
     results_df = pd.DataFrame({
         "Skill": list(st.session_state.skill_scores.keys()),
@@ -319,15 +319,15 @@ elif st.session_state.page == "Recommendations":
     
     st.altair_chart(chart, use_container_width=True)
    
-    st.subheader("Top 5 Career Matches:")
+    st.header("Top 5 Career Matches:")
     for result in st.session_state.career_results:
-        st.header(f"**{result['title']}** ")#({result['confidence']}%)")
+        st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
         st.caption(result["description"])
 
     st.subheader("Skill-Based Course Recommendations")
     for skill, url in st.session_state.low_skill_courses.items():
         key = f"{st.session_state.current_user}_{skill}"
-        progress = st.markdown(f"{skill} Course", key=key)
+        progress = st.checkbox(f"{skill} Course", key=key)
         if st.session_state.current_user != "Guest":
             st.session_state.course_progress[key] = progress
         st.markdown(f"[Course Link]({url})")
