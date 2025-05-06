@@ -170,6 +170,11 @@ if current_page not in valid_pages:
 
 index = valid_pages.index(current_page)
 
+sidebar_selection = st.sidebar.selectbox(
+    "Navigate",
+    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
+    index=index
+)
 
 if sidebar_selection != st.session_state.page:
     st.session_state.page = sidebar_selection
