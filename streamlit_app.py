@@ -172,7 +172,7 @@ index = valid_pages.index(current_page)
 
 sidebar_selection = st.sidebar.selectbox(
     "Navigate",
-    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
+    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendations"],
     index=index
 )
 
