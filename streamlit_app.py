@@ -152,11 +152,26 @@ def set_page(selected):
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
-sidebar_selection = st.sidebar.radio("Go to", 
-    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
-    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"].index(st.session_state.page),
-    key="sidebar_page"
-)
+#sidebar_selection = st.sidebar.radio("Go to", 
+ #   ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
+#    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"].index(st.session_state.page),
+  #  key="sidebar_page"
+#)
+
+valid_pages = [
+    "Homepage", "Login / Sign up", "Profile", "Assessment",
+    "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
+]
+
+# Get the current page or fallback to "Homepage"
+current_page = st.session_state.get("page", "Homepage")
+
+# Fallback to Homepage if current_page is not valid
+if current_page not in valid_pages:
+    current_page = "Homepage"
+
+index = valid_pages.index(current_page)
+
 
 if sidebar_selection != st.session_state.page:
     st.session_state.page = sidebar_selection
