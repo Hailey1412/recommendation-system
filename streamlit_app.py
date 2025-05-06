@@ -354,7 +354,7 @@ elif st.session_state.page == "Education Details":
             for q, score in st.session_state.assessment_responses.items() if score <= 3 and q in question_courses
         }
 
-        set_page("Recommendations")
+        set_page("Skills Results")
 
     # Ask for education info
     #st.header("🎓 2. Add Your Education")
