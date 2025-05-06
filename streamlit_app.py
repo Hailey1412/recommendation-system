@@ -325,12 +325,16 @@ elif st.session_state.page == "Recommendations":
         st.caption(result["description"])
 
     st.subheader("Skill-Based Course Recommendations")
-    for skill, url in st.session_state.low_skill_courses.items():
-        key = f"{st.session_state.current_user}_{skill}"
-        progress = st.checkbox(f"{skill} Course", key=key)
-        if st.session_state.current_user != "Guest":
-            st.session_state.course_progress[key] = progress
-        st.markdown(f"[Course Link]({url})")
+
+    for skill, url in st.session_state.low_skill_courses.item():
+        st.markdown(f"### {skill} Course")
+        st.markdown(f"[Clock here to access the course] ({url})")
+        #for skill, url in st.session_state.low_skill_courses.items():
+     #   key = f"{st.session_state.current_user}_{skill}"
+      #  progress = st.checkbox(f"{skill} Course", key=key)
+       # if st.session_state.current_user != "Guest":
+        #    st.session_state.course_progress[key] = progress
+        #st.markdown(f"[Course Link]({url})")
 
     with st.expander("More Personlized Course Recommendations"):
         for qid, url in st.session_state.low_q_courses.items():
