@@ -511,27 +511,26 @@ else:
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+
+    # Reverse the courses_names dictionary to map URLs -> names
+    url_to_course_name = {v: k for k, v in courses_names.items()}
+
     
     # Personalized Courses Recommendations
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
         for skill, questions in skill_groups.items():
-            if skill in st.session_state.low_skill_courses:  # Check if skill has low score
+            if skill in st.session_state.low_skill_courses:
                 related_courses = []
                 for question in questions:
                     if question in question_courses:
                         course_url = question_courses[question]
-                        course_name = courses_names.get(course_url)
+                        course_name = url_to_course_name.get(course_url, 'Unnamed Course')
                         related_courses.append(f"[{course_name}]({course_url})")
         
                 if related_courses:
-                    st.markdown(f"### {skill} Courses:")
                     for course in related_courses:
                         st.markdown(f"- {course}")
-                else:
-                    st.warning(f"No courses found for {skill}.")
-            else:
-                st.write(f"✅ Great job! You scored above 3 in {skill}.")
 
         # Identify low-score skills
     
