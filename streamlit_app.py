@@ -223,7 +223,7 @@ if st.session_state.page == "Homepage":
                 }
                 .overlay-buttons h1 {
                     font-size: 30px;
-                    color: #003366;
+                    color: #990000;  /* Updated color */
                     margin-bottom: 20px;
                 }
             </style>
@@ -451,7 +451,7 @@ elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
         st.warning("You must log in to access the profile page.")
     else:
-        st.title(f"Hi {st.session_state.current_user}")
+        st.title(f"Hi {st.session_state.current_user}!")
         st.markdown("#### Welcome to your profile! Track your skill growth, explore your career matches, and manage your learning progress.")
 
         # Tabs
