@@ -398,6 +398,8 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         .configure_axis(labelFontSize=12, titleFontSize=14)
     )
 
+    st.altair_chart(chart, use_container_width=True)
+
     if st.button("Next"):
         set_page("Career Recommendations")
 
