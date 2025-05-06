@@ -258,7 +258,7 @@ elif st.session_state.page == "Login / Sign up":
                 st.error("User not found. Please sign up first.")
     
 elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
-    st.title("Assessment")
+    st.title("Skills Assessment")
     st.subheader("Let's assess your skills!")
     
     # Store responses in session state
@@ -448,17 +448,22 @@ elif st.session_state.page == "Profile":
         
 elif st.session_state.page == "Career Recommendations":
     st.header("Top 5 Career Matches:")
+
     for result in st.session_state.career_results:
-        st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
+        st.markdown(
+            f"<h4 style='color:#990000; font-weight:600;'>{result['title']} ({result['confidence']}%)</h4>",
+            unsafe_allow_html=True
+        )
         st.caption(result["description"])
 
-    col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
+    col_l, col_cent1, col_cent2, col_r = st.columns([2, 2, 2, 2])
     with col_l: 
         if st.button("Back"):
             set_page("Skills Results")
     with col_r: 
         if st.button("Next"): 
             set_page("Course Recommendations")
+
    
 
 else: 
