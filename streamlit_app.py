@@ -160,7 +160,7 @@ st.sidebar.title("Navigation")
 
 valid_pages = [
     "Homepage", "Login / Sign up", "Profile", "Assessment",
-    "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
+    "Education Details", "Skills Results", "Career Recommendations", "Course Recommendations"
 ]
 
 # Use a fallback to "Homepage" if page is missing or invalid
@@ -286,7 +286,7 @@ elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Pro
         set_page("Education Details")
 
 elif st.session_state.page == "Education Details": 
-    st.title("🎓 Add Your Education")
+    st.title("Add Your Education")
 
     # Initialize education blocks
     if "education_blocks" not in st.session_state:
@@ -300,7 +300,7 @@ elif st.session_state.page == "Education Details":
 
     for i in range(len(st.session_state.education_blocks)):
         edu = st.session_state.education_blocks[i]
-        st.markdown(f"##### 🎓 Education {i+1}")
+        st.markdown(f"##### Education {i+1}")
         col1, col2, col3 = st.columns([4, 4, 1])
         
         with col1:
