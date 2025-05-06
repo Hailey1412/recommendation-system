@@ -484,7 +484,7 @@ else:
         if st.button("💾 Save Results by Signing Up"):
             set_page("Login / Sign up")
     else:
-        st.success("Your results are saved to your profile!")"""
+        st.success("Your results are saved to your profile!")
     
         
         
