@@ -392,13 +392,11 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         .encode(
             x=alt.X("Skill:N", sort="-y", title="Skill"),
             y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 100]), title="Score (%)"),
-            color=alt.Color("Score:Q", scale=alt.Scale(range = [range=["#f5f5dc", "#d2b48c", "#a0522d"])
+            color=alt.Color("Score:Q", scale=alt.Scale(range=["#f5f5dc", "#d2b48c", "#a0522d"]))
         )
-        .properties(height=400, width=600)  # Bigger horizontal chart
+        .properties(height=400, width=600)
         .configure_axis(labelFontSize=12, titleFontSize=14)
     )
-    
-    st.altair_chart(chart, use_container_width=True)
 
 
 elif st.session_state.page == "Profile":
