@@ -515,25 +515,18 @@ else:
     # Personalized Courses Recommendations
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
-        # Loop through skill groups and check for low scores
-        for skill, questions in skill_groups.items():
-            if skill in st.session_state.low_skill_courses:  # Check if skill has low score
-                # Get the courses related to the skill's questions
-                related_courses = []
-                for question in questions:
-                    if question in question_courses:
-                        related_courses.append(f"[{courses_names.get(question, 'No Name')}]({question_courses[question]})")
+        # Identify low-score skills
+        low_score_skills = {skill: score for skill, score in skill_scores.items() if score <= 3}
     
-                # If related courses are found, display them
-                if related_courses:
-                    st.markdown(f"### {skill} Courses:")
-                    for course in related_courses:
-                        st.markdown(f"- {course}")
-                else:
-                    st.warning(f"No courses found for {skill}.")
-    
+        # For each low-score skill, display the related courses
+        for skill, score in low_score_skills.items():
+            if skill in skill_groups:  # Check if the skill has associated questions
+                for question in skill_groups[skill]:
+                    course_url = question_courses.get(question, "#")
+                    course_name = courses_names.get(course_url, "No Name")
+                    st.markdown(f"- [{course_name}]({course_url})")
             else:
-                st.write(f"✅ Great job! You scored above 3 in {skill}.")
+                st.success("Great job! You scored above 3 in all courses.")
     
     # Account-based saving
     st.markdown("<br>", unsafe_allow_html=True)
@@ -545,12 +538,6 @@ else:
     
     # Navigation
     col_l, _, _, col_r = st.columns([2, 1, 1, 2])
-    with col_l:
+    with col_l: 
         if st.button("Back"):
             set_page("Career Recommendations")
-
-        
-    
-        
-        
-            
