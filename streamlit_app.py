@@ -153,8 +153,8 @@ def set_page(selected):
 # Sidebar navigation
 st.sidebar.title("Navigation")
 sidebar_selection = st.sidebar.radio("Go to", 
-    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Recommendations"],
-    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Recommendations"].index(st.session_state.page),
+    ["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"],
+    index=["Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"]].index(st.session_state.page),
     key="sidebar_page"
 )
 
@@ -200,7 +200,8 @@ if st.session_state.page == "Homepage":
                 </div>
             </div>
         """, unsafe_allow_html=True)
-    
+
+        st.markdown("---")
         # Create 3 columns: left, center, right
         left_col, center_col1, center_col2, right_col = st.columns([1, 2, 2, 1])
         
@@ -263,50 +264,51 @@ elif st.session_state.page == "Assessment":
         response = st.slider(question, 1, 5, key=qid)
         st.session_state.assessment_responses[qid] = response
 
-    # Ask for education info
-    st.header("🎓 2. Add Your Education")
-    
+    if st.button("Next"):
+        set_page("Education Details")
+
+elif st.session_state.page == "Education Details":
+    st.title("🎓 Add Your Education")
+
+    # Initialize education blocks
+    if "education_blocks" not in st.session_state:
+        st.session_state.education_blocks = []
+
     degree_options = ["High School Diploma", "Associate's", "Certification", "Bachelor's", "Master's", "PhD"]
     field_options = list(mlb_field.classes_)
-    
-    # Add Education Entry Button
+
     if st.button("➕ Add Education"):
         st.session_state.education_blocks.append({"degree": "", "field": ""})
-    
-    # Display Education Inputs
+
     for i in range(len(st.session_state.education_blocks)):
         edu = st.session_state.education_blocks[i]
         st.markdown(f"##### 🎓 Education {i+1}")
         col1, col2, col3 = st.columns([4, 4, 1])
-    
+        
         with col1:
             degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
         with col2:
+            field = None
             if degree != "High School Diploma":
                 field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
-            else:
-                field = None
         with col3:
-            remove = st.button("X", key=f"remove_{i}")
-            if remove:
+            if st.button("X", key=f"remove_{i}"):
                 st.session_state.education_blocks.pop(i)
-    
-        # Update session state
+                st.experimental_rerun()
+        
         if i < len(st.session_state.education_blocks):
             st.session_state.education_blocks[i] = {"degree": degree, "field": field}
-    
+
     st.markdown("---")
-    
-    # Submit Button
+
     if st.button("✅ Submit Assessment"):
-        # Skill averaging
+        # Step 1: Calculate Skill Scores
         skill_scores = {}
         for skill, q_ids in skill_groups.items():
             skill_scores[skill] = np.mean([st.session_state.assessment_responses[q] for q in q_ids])
-
         st.session_state.skill_scores = skill_scores
 
-        # Prepare model input
+        # Step 2: Prepare Model Input
         skill_input = [skill_scores[skill] for skill in model_skill_order]
         degrees = [edu["degree"] for edu in st.session_state.education_blocks]
         fields = [edu["field"] for edu in st.session_state.education_blocks]
@@ -319,21 +321,94 @@ elif st.session_state.page == "Assessment":
         job_titles = le.inverse_transform(top5_idx)
         confidences = predictions[top5_idx]
 
+        # Step 3: Save Recommendations
         st.session_state.career_results = [
             {"title": job, "confidence": round(conf*100, 2), "description": job_descriptions_dict.get(job, "No description")}
             for job, conf in zip(job_titles, confidences)
         ]
 
-        # Prepare low-score skills and questions
-        low_skill_courses = {s: skill_courses[s] for s, score in skill_scores.items() if score <= 3 and s in skill_courses}
-        low_q_courses = {
+        # Step 4: Save low-score skills
+        st.session_state.low_skill_courses = {
+            s: skill_courses[s] for s, score in skill_scores.items() if score <= 3 and s in skill_courses
+        }
+        st.session_state.low_q_courses = {
             q: question_courses[q]
             for q, score in st.session_state.assessment_responses.items() if score <= 3 and q in question_courses
         }
-        st.session_state.low_skill_courses = low_skill_courses
-        st.session_state.low_q_courses = low_q_courses
 
         set_page("Recommendations")
+
+    # Ask for education info
+    #st.header("🎓 2. Add Your Education")
+    
+    #degree_options = ["High School Diploma", "Associate's", "Certification", "Bachelor's", "Master's", "PhD"]
+    #field_options = list(mlb_field.classes_)
+    
+    # Add Education Entry Button
+    #if st.button("➕ Add Education"):
+    #    st.session_state.education_blocks.append({"degree": "", "field": ""})
+    
+    # Display Education Inputs
+    #for i in range(len(st.session_state.education_blocks)):
+    #    edu = st.session_state.education_blocks[i]
+     #   st.markdown(f"##### 🎓 Education {i+1}")
+      #  col1, col2, col3 = st.columns([4, 4, 1])
+    
+     #   with col1:
+      #      degree = st.selectbox(f"Select Degree {i+1}", degree_options, key=f"degree_{i}")
+      #  with col2:
+       #     if degree != "High School Diploma":
+        #        field = st.selectbox(f"Select Field of Study {i+1}", field_options, key=f"field_{i}")
+         #   else:
+          #      field = None
+        #with col3:
+           # remove = st.button("X", key=f"remove_{i}")
+            #if remove:
+             #   st.session_state.education_blocks.pop(i)
+    
+        # Update session state
+        #if i < len(st.session_state.education_blocks):
+         #   st.session_state.education_blocks[i] = {"degree": degree, "field": field}
+    
+    #st.markdown("---")
+    
+    # Submit Button
+    #if st.button(" Submit Assessment"):
+        # Skill averaging
+      #  skill_scores = {}
+        #for skill, q_ids in skill_groups.items():
+           # skill_scores[skill] = np.mean([st.session_state.assessment_responses[q] for q in q_ids])
+
+        #st.session_state.skill_scores = skill_scores
+
+        # Prepare model input
+      #  skill_input = [skill_scores[skill] for skill in model_skill_order]
+      #  degrees = [edu["degree"] for edu in st.session_state.education_blocks]
+       # fields = [edu["field"] for edu in st.session_state.education_blocks]
+      #  degree_encoded = mlb_degree.transform([degrees])
+      #  field_encoded = mlb_field.transform([fields])
+
+      #  final_input = np.hstack([skill_input, degree_encoded[0], field_encoded[0]])
+      #  predictions = model.predict_proba([final_input])[0]
+      #  top5_idx = predictions.argsort()[-5:][::-1]
+      #  job_titles = le.inverse_transform(top5_idx)
+        #confidences = predictions[top5_idx]
+
+      #  st.session_state.career_results = [
+          #  {"title": job, "confidence": round(conf*100, 2), "description": job_descriptions_dict.get(job, "No description")}
+          #  for job, conf in zip(job_titles, confidences)
+       # ]
+
+        # Prepare low-score skills and questions
+       # low_skill_courses = {s: skill_courses[s] for s, score in skill_scores.items() if score <= 3 and s in skill_courses}
+       # low_q_courses = {
+        #    q: question_courses[q]
+        #    for q, score in st.session_state.assessment_responses.items() if score <= 3 and q in question_courses
+      #  }
+      #  st.session_state.low_skill_courses = low_skill_courses
+      #  st.session_state.low_q_courses = low_q_courses
+
+     #   set_page("Recommendations")
 
 
 elif st.session_state.page == "Recommendations":
