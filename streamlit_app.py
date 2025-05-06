@@ -375,15 +375,15 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     
     # Skill descriptions
     skills_description = {
-        "Decision-Making": "Decision-making is the ability to choose between alternatives and make sound judgments.",
-        "Real-life Experience": "This refers to your practical exposure and application of knowledge in real situations.",
-        "Work Based Learning": "It is a learning approach where students gain skills through real work environments.",
-        "Emotional Intelligence": "This is your ability to understand and manage your emotions and those of others.",
-        "Communication": "This refers to your ability to clearly express ideas and understand others.",
-        "Problem Solving Skills": "Your ability to identify issues, analyze situations, and find effective solutions.",
-        "Self-management": "Your capability to manage your time, tasks, and responsibilities efficiently.",
-        "Teamwork": "Your effectiveness in working within groups to achieve shared goals.",
-        "Professionalism": "Your demonstration of ethical behavior, responsibility, and workplace etiquette."
+        "Decision-Making": "Decision-making involves engaging in tasks that require choosing between multiple options, analyzing risks, and selecting the most suitable course of action. This could include participating in simulations, case studies, or project-based scenarios that mirror real-world business or technical decisions.",
+        "Real-life Experience": "Real-world engagement includes activities that allow students to learn about and understand available opportunities which will allow them to make informed decisions regarding their employment. It includes activities like witnessing alumni visit to talk about their career paths and available opportunities in their company. It may also include listening to employers’ seminars about employment opportunities and skills requirements for these opportunities. Additionally, it could include experiencing employer’s and companies’ participation in project presentations and program delivery.",
+        "Work Based Learning": "Work-based learning is an educational strategy that provides students with real-life work experience during while they can apply their technical and academic skills. It is a major opportunity for students to develop their employability. Work-based learning activities include short-term (6-12 weeks) or long-term (full academic year) internship work placement, it also includes part-time jobs, self-employment, freelancing or volunteer work.",
+        "Emotional Intelligence": "Emotional intelligence includes participating in group activities, feedback sessions, or mentorship experiences that help students understand emotional responses in themselves and others, regulate behavior in stressful situations, and build empathy and interpersonal sensitivity.",
+        "Communication": "Communication skills are developed through activities such as class discussions, group projects, presentations, or report writing, which allow students to articulate their ideas clearly, adapt their message for different audiences, and engage in active listening.",
+        "Problem Solving Skills": "Problem-solving is strengthened through hands-on projects, design thinking exercises, and case-based learning where students identify challenges, evaluate options, and implement innovative solutions under constraints.",
+        "Self-management": "Self-management involves participating in time-sensitive assignments, goal-setting workshops, or multi-tasking activities that train students to organize workloads, meet deadlines, and maintain motivation and accountability without constant supervision.",
+        "Teamwork": "Teamwork skills are fostered through collaborative projects, peer-led tasks, and group decision-making exercises where students coordinate responsibilities, resolve conflicts, and contribute toward shared goals.",
+        "Professionalism": "Professionalism is demonstrated through structured interactions such as mock interviews, workplace etiquette training, or project-based work with external partners, allowing students to practice reliability, ethical behavior, and respectful communication in professional settings."
     }
     
     # Display each skill with color highlight
