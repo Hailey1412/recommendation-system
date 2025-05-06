@@ -514,9 +514,7 @@ elif st.session_state.page == "Profile":
                 .configure_axis(labelFontSize=12, titleFontSize=14)
             )
             st.altair_chart(chart, use_container_width=True)
-        
-            if st.button("Next"):
-                set_page("Career Recommendations")
+    
             # --- Career Recommendations ---
         with tab2:
             st.markdown("### <span style='color:#990000'>Your Career Matches</span>", unsafe_allow_html=True)
