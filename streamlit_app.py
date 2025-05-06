@@ -398,6 +398,9 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
         .configure_axis(labelFontSize=12, titleFontSize=14)
     )
 
+    if st.button("Next"):
+        set_page("Education Details")
+
 
 elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
