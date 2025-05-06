@@ -399,7 +399,7 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     )
 
     if st.button("Next"):
-        set_page("Education Details")
+        set_page("Career Recommendations")
 
 
 elif st.session_state.page == "Profile":
