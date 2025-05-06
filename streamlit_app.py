@@ -72,6 +72,19 @@ skill_groups = {
     "Professionalism": ["Q25", "Q26", "Q27"]
 }
 
+skills_description = {
+    "Decision-Making": "Decision-making is... ",
+    "Real-life Experience": "It is...",
+    "Work Based Learning": "It is...",
+    "Teamwork Courses": "It is...",
+    "Presentation Courses": "It is...",
+    "Emotional Intelligence": "It is...",
+    "Communication": "It is...",
+    "Problem Solving Skills": "It is...",
+    "Self-management": "It is...",
+    "Teamwork": "It is...",
+    "Professionalism": "It is..."}
+
 skill_courses = {
     "Decision-Making": "https://www.edx.org/course/critical-thinking-problem-solving",
     "Emotional Intelligence": "https://www.linkedin.com/learning/developing-your-emotional-intelligence",
@@ -291,18 +304,45 @@ elif st.session_state.page == "Recommendations":
         "Skill": list(st.session_state.skill_scores.keys()),
         "Score": list(st.session_state.skill_scores.values())
     })
+    # Convert scores to percentage and sort them
+    results_df = pd.DataFrame({
+        "Skill": list(st.session_state.skill_scores.keys()),
+        "Score": [round(score * 20, 2) for score in st.session_state.skill_scores.values()]  # Convert to percentage
+    })
+    results_df.sort_values(by="Score", ascending=False, inplace=True)
     
-  
+    # Summary sentence
+    sorted_skills = results_df["Skill"].tolist()
+    st.markdown(
+        f"According to your input in the assessment and education details, your skills from strongest to weakest are: "
+        f"{', '.join(sorted_skills)}."
+    )
+    
+    # Skill details with descriptions
+    skills_description = {
+        "Decision-Making": "Decision-making is the ability to choose between alternatives and make sound judgments.",
+        "Real-life Experience": "This refers to your practical exposure and application of knowledge in real situations.",
+        "Work Based Learning": "It is a learning approach where students gain skills through real work environments.",
+        "Teamwork Courses": "These enhance collaboration and cooperation through structured learning experiences.",
+        "Presentation Courses": "These focus on improving public speaking and visual communication skills.",
+        "Emotional Intelligence": "This is your ability to understand and manage your emotions and those of others.",
+        "Communication": "This refers to your ability to clearly express ideas and understand others.",
+        "Problem Solving Skills": "Your ability to identify issues, analyze situations, and find effective solutions.",
+        "Self-management": "Your capability to manage your time, tasks, and responsibilities efficiently.",
+        "Teamwork": "Your effectiveness in working within groups to achieve shared goals.",
+        "Professionalism": "Your demonstration of ethical behavior, responsibility, and workplace etiquette."
+    }
+    
+    # Display each skill with score and definition
+    for _, row in results_df.iterrows():
+        skill = row["Skill"]
+        score = row["Score"]
+        st.markdown(f"### {skill} — {score}%")
+        st.caption(skills_description.get(skill, "No description available."))
     # Display text results on top
     with st.expander("See Detailed Scores"):
         for skill, score in st.session_state.skill_scores.items():
             st.write(f"**{skill}**: {round(score, 2)}")
-    
-    # Prepare DataFrame
-    results_df = pd.DataFrame({
-        "Skill": list(st.session_state.skill_scores.keys()),
-        "Score": list(st.session_state.skill_scores.values())
-    })
     
     # Display bar chart below the text results
     chart = (
@@ -329,13 +369,6 @@ elif st.session_state.page == "Recommendations":
     for skill, url in st.session_state.low_skill_courses.items():
         st.markdown(f"###### {skill} Course: ({url})")
 
-    
-        #for skill, url in st.session_state.low_skill_courses.items():
-     #   key = f"{st.session_state.current_user}_{skill}"
-      #  progress = st.checkbox(f"{skill} Course", key=key)
-       # if st.session_state.current_user != "Guest":
-        #    st.session_state.course_progress[key] = progress
-        #st.markdown(f"[Course Link]({url})")
 
     with st.expander("More Personlized Course Recommendations"):
         for qid, url in st.session_state.low_q_courses.items():
