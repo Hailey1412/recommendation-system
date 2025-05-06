@@ -513,19 +513,30 @@ else:
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
     st.write(type(assessment_responses))
     st.write(assessment_responses)
-
     
+    # Personalized Courses Recommendations
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
-        low_scores = {course: score for course, score in skill_scores.items() if score <= 3}
-        if low_scores:
-            for course, score in low_scores.items():
-                course_url = questions_urls.get(course, "#")
-                st.markdown(f"- [{course}]({course_url})")
-        else:
-            st.success("Great job! You scored above 3 in all courses.")
+        # Loop through skill groups and check for low scores
+        for skill, questions in skill_groups.items():
+            if skill in st.session_state.low_skill_courses:  # Check if skill has low score
+                # Get the courses related to the skill's questions
+                related_courses = []
+                for question in questions:
+                    if question in question_courses:
+                        related_courses.append(f"[{courses_names.get(question, 'No Name')}]({question_courses[question]})")
     
-        
+                # If related courses are found, display them
+                if related_courses:
+                    st.markdown(f"### {skill} Courses:")
+                    for course in related_courses:
+                        st.markdown(f"- {course}")
+                else:
+                    st.warning(f"No courses found for {skill}.")
+    
+            else:
+                st.write(f"✅ Great job! You scored above 3 in {skill}.")
+    
     # Account-based saving
     st.markdown("<br>", unsafe_allow_html=True)
     if st.session_state.current_user == "Guest":
@@ -536,7 +547,7 @@ else:
     
     # Navigation
     col_l, _, _, col_r = st.columns([2, 1, 1, 2])
-    with col_l: 
+    with col_l:
         if st.button("Back"):
             set_page("Career Recommendations")
 
