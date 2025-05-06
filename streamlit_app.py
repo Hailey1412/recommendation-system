@@ -163,8 +163,6 @@ if 'course_progress' not in st.session_state:
     st.session_state.course_progress = {}
 if "assessment_responses" not in st.session_state:
     st.session_state.assessment_responses = {}
-else:
-    st.warning("No assessment responses found.")
 
 def set_page(selected):
     st.session_state.page = selected
