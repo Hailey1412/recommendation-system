@@ -355,10 +355,8 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     
     # Summary sentence
     sorted_skills = results_df["Skill"].tolist()
-    st.markdown(
-        f"According to your input in the assessment and education details, your skills from strongest to weakest are: "
-        f"**{', '.join(sorted_skills)}**."
-    )
+    st.markdown("#### According to your input in the assessment and education details, your skills from strongest to weakest are: "
+    )#  f"**{', '.join(sorted_skills)}**."
     
     # Skill descriptions
     skills_description = {
