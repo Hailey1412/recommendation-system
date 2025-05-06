@@ -466,8 +466,48 @@ elif st.session_state.page == "Career Recommendations":
 
    
 
-else: 
-    st.title("Course Recommendations")
+else:  
+    st.title("🎓 Course Recommendations")
+    st.markdown("<h3 style='color:#990000;'>Skill-Based Suggestions</h3>", unsafe_allow_html=True)
+    
+    # Display low-score skill-based course recommendations
+    for skill, url in st.session_state.low_skill_courses.items():
+        st.markdown("<div style='margin-bottom:15px; padding:10px; background-color:#f9f9f9; border-left:5px solid #990000; border-radius:5px;'> <p style='margin:0;'><strong style='color:#990000;'>{skill}</strong></p> <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>📘 View Recommended Course</a> </div>",unsafe_allow_html=True)
+        )
+    
+    # Divider between sections
+    st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+    
+    # More personalized section
+    with st.expander("📌 More Personalized Course Recommendations"):
+        st.markdown("<h4 style='color:#990000;'>Based on Your Individual Responses:</h4>", unsafe_allow_html=True)
+        for qid, url in st.session_state.low_q_courses.items():
+            st.markdown(
+                f"""
+                <div style='margin-bottom:10px;'>
+                    <p style='margin:0;'><strong>{questions[qid]}</strong></p>
+                    <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>🔗 View Course</a>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    
+    # Account-based saving
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.session_state.current_user == "Guest":
+        if st.button("💾 Save Results by Signing Up"):
+            set_page("Login / Sign up")
+    else:
+        st.success("✅ Your results are saved to your profile!")
+    
+    # Navigation
+    col_l, _, _, col_r = st.columns([2, 1, 1, 2])
+    with col_l: 
+        if st.button("⬅️ Back"):
+            set_page("Career Recommendations")
+
+    
+    """st.title("Course Recommendations")
     st.subheader("Skill-Based Course Recommendations")
     for skill, url in st.session_state.low_skill_courses.items():
         st.markdown(f"###### {skill} Course: ({url})")
@@ -477,7 +517,7 @@ else:
             st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
 
     if st.session_state.current_user == "Guest":
-        if st.button("💾 Save Results by Signing Up"):
+        if st.button("Save Results by Signing Up"):
             set_page("Login / Sign up")
     else:
         st.success("Your results are saved to your profile!")
@@ -485,7 +525,7 @@ else:
     col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
     with col_l: 
         if st.button("Back"): 
-            set_page("Career Recommendations")
+            set_page("Career Recommendations")"""
         
         
     
