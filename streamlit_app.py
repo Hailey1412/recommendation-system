@@ -134,8 +134,6 @@ if 'career_results' not in st.session_state:
 if 'course_progress' not in st.session_state:
     st.session_state.course_progress = {}
 
-skill_scores = {}
-
 def set_page(selected):
     st.session_state.page = selected
 
@@ -246,38 +244,93 @@ elif st.session_state.page == "Assessment":
     st.markdown("---")
     
     # Submit Button
-    if st.button("Submit Assessment"):
-        if not st.session_state.education_blocks:
-            st.error("❗ Please add at least one education entry.")
-            st.stop()
-        
-        # ✅ Collect user degrees and fields
-        user_degrees = list({edu["degree"] for edu in st.session_state.education_blocks})
-        user_fields = list({edu["field"] for edu in st.session_state.education_blocks if edu["field"]})
-    
-        st.success("Assessment submitted successfully!")
-        
-        st.write("Your responses:")
-        st.write(st.session_state.assessment_responses)
+    if st.button("✅ Submit Assessment"):
+        # Skill averaging
+        skill_scores = {}
+        for skill, q_ids in skill_groups.items():
+            skill_scores[skill] = np.mean([st.session_state.assessment_responses[q] for q in q_ids])
 
-        # Calculate skill group scores
-        
-        for skill, qid_list in skill_groups.items():
-            values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
-            skill_scores[skill] = round(np.mean(values), 2) if values else None
+        st.session_state.skill_scores = skill_scores
+
+        # Prepare model input
+        skill_input = [skill_scores[skill] for skill in model_skill_order]
+        degrees = [edu["degree"] for edu in st.session_state.education_blocks]
+        fields = [edu["field"] for edu in st.session_state.education_blocks]
+        degree_encoded = mlb_degree.transform([degrees])
+        field_encoded = mlb_field.transform([fields])
+
+        final_input = np.hstack([skill_input, degree_encoded[0], field_encoded[0]])
+        predictions = model.predict_proba([final_input])[0]
+        top5_idx = predictions.argsort()[-5:][::-1]
+        job_titles = le.inverse_transform(top5_idx)
+        confidences = predictions[top5_idx]
+
+        st.session_state.career_results = [
+            {"title": job, "confidence": round(conf*100, 2), "description": job_descriptions_dict.get(job, "No description")}
+            for job, conf in zip(job_titles, confidences)
+        ]
+
+        # Prepare low-score skills and questions
+        low_skill_courses = {s: skill_courses[s] for s, score in skill_scores.items() if score <= 3 and s in skill_courses}
+        low_q_courses = {
+            q: question_courses[q]
+            for q, score in st.session_state.assessment_responses.items() if score <= 3 and q in question_courses
+        }
+        st.session_state.low_skill_courses = low_skill_courses
+        st.session_state.low_q_courses = low_q_courses
 
         set_page("Recommendations")
-        
+
 
 elif st.session_state.page == "Recommendations":
-    st.title("Career Recommendations")
-    st.write(skill_scores)
+    st.title("🔍 Career & Skill Recommendations")
+
+    st.subheader("Your Skill Assessment Results:")
+    for skill, score in st.session_state.skill_scores.items():
+        st.write(f"**{skill}**: {round(score, 2)}")
+
+    st.subheader("Top 5 Career Matches:")
+    for result in st.session_state.career_results:
+        st.markdown(f"**{result['title']}** ({result['confidence']}%)")
+        st.caption(result["description"])
+
+    st.subheader("🎓 Skill-Based Course Recommendations")
+    for skill, url in st.session_state.low_skill_courses.items():
+        key = f"{st.session_state.current_user}_{skill}"
+        progress = st.checkbox(f"{skill} Course", key=key)
+        if st.session_state.current_user != "Guest":
+            st.session_state.course_progress[key] = progress
+        st.markdown(f"[Course Link]({url})")
+
+    st.subheader("🧠 Specific Courses for Low Responses")
+    for qid, url in st.session_state.low_q_courses.items():
+        st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
+
+    if st.session_state.current_user == "Guest":
+        if st.button("💾 Save Results by Signing Up"):
+            set_page("Login / Sign up")
+    else:
+        st.success("Your results are saved to your profile!")
     
-else:                 
-    st.title("Profile")
-    user = st.session_state.get("current_user", "Guest")
-    st.title(f"Welcome {user}!")
-    st.write("You can view and keep progress of all your results here!")
-    if st.button("Homepage"):
-        set_page("Homepage")
+elif st.session_state.page == "Profile":
+    if st.session_state.current_user == "Guest":
+        st.warning("You must log in to access the profile page.")
+    else:
+        st.title(f"📘 Profile - {st.session_state.current_user}")
+        st.subheader("Saved Skill Scores:")
+        for skill, score in st.session_state.skill_scores.items():
+            st.write(f"**{skill}**: {round(score, 2)}")
+
+        st.subheader("Career Recommendations:")
+        for result in st.session_state.career_results:
+            st.markdown(f"**{result['title']}** ({result['confidence']}%)")
+            st.caption(result["description"])
+
+        st.subheader("Your Course Progress:")
+        for skill, url in st.session_state.low_skill_courses.items():
+            key = f"{st.session_state.current_user}_{skill}"
+            progress = st.session_state.course_progress.get(key, False)
+            st.checkbox(f"{skill} Course", value=progress, key=key, help="Check if you’ve completed this course.")
+            st.markdown(f"[Course Link]({url})")
+
     
