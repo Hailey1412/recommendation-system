@@ -13,7 +13,7 @@ mlb_field = joblib.load("mlb_field1.pkl")
 le = joblib.load("label_encoder1.pkl")
 
 # Load the job descriptions
-job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")  # <-- Adjust the path if needed
+job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")  
 job_descriptions_dict = dict(zip(job_descriptions_df["Job Title"], job_descriptions_df["Description"]))
 
 # Skill order for model input
@@ -306,7 +306,7 @@ elif st.session_state.page == "Education Details":
 
     st.markdown("---")
 
-    if st.button("✅ Submit Assessment"):
+    if st.button("Submit Assessment"):
         # Step 1: Calculate Skill Scores
         skill_scores = {}
         for skill, q_ids in skill_groups.items():
@@ -384,23 +384,24 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
             f'</div>',
             unsafe_allow_html=True
         ) # f'<div style="background-color:#e0f0ff;padding:10px;border-radius:8px;margin-bottom:10px">'
-    
+
+    st.markdown("---")
+    # Display bar chart below the text results
     # Display bar chart below the text results
     chart = (
         alt.Chart(results_df)
         .mark_bar(size=30)
         .encode(
             x=alt.X("Skill:N", sort="-y", title="Skill"),
-            y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 5]), title="Score"),
-            color=alt.Color("Score:Q", scale=alt.Scale(scheme="blues"))
+            y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 100]), title="Score (%)"),
+            color=alt.Color("Score:Q", scale=alt.Scale(scheme="reds"))
         )
         .properties(height=400, width=600)  # Bigger horizontal chart
         .configure_axis(labelFontSize=12, titleFontSize=14)
     )
     
     st.altair_chart(chart, use_container_width=True)
-    if st.button("Next"): 
-        set_page("Career Recommendations")
+
     
 elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
