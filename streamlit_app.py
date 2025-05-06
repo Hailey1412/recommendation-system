@@ -315,8 +315,8 @@ elif st.session_state.page == "Recommendations":
         )
         st.altair_chart(chart, use_container_width=True)
 
-    for skill, score in st.session_state.skill_scores.items():
-        st.write(f"**{skill}**: {round(score, 2)}")
+   # for skill, score in st.session_state.skill_scores.items():
+     #   st.write(f"**{skill}**: {round(score, 2)}")
 
     st.subheader("Top 5 Career Matches:")
     for result in st.session_state.career_results:
