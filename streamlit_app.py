@@ -163,22 +163,55 @@ if sidebar_selection != st.session_state.page:
 
 # Routing
 if st.session_state.page == "Homepage":
-    st.title("Empowering UAE Youth for the Future of Work")
-    st.subheader("Discover your strengths. Choose your path.")
     st.markdown("""
-    We have created a personalized AI-powered platform designed to help youth in the UAE discover their strengths, explore careers, and find courses to grow.  
-    Take our skills-based assessment and receive career and course recommendations tailored to your profile.
-    """)
-    st.markdown("#### Skills →  Assessment → Career →  Courses")
+        <style>
+            .full-width-image {
+                position: relative;
+                width: 100%;
+                height: 500px;
+                background-image: url('https://pchr.gov.ae/app_themes/lg21018/images/overview-yoth-new.jpg');
+                background-size: cover;
+                background-position: center;
+                border-radius: 10px;
+            }
+            .overlay-buttons {
+                position: absolute;
+                top: 60%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                background-color: rgba(255, 255, 255, 0.75);
+                padding: 20px;
+                border-radius: 12px;
+            }
+            .overlay-buttons h1 {
+                font-size: 30px;
+                color: #003366;
+                margin-bottom: 20px;
+            }
+        </style>
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Start as Guest"):
-            st.session_state.current_user = "Guest"
-            set_page("Assessment")
-    with col2:
-        if st.button("Login / Sign Up"):
-            set_page("Login / Sign up")
+        <div class="full-width-image">
+            <div class="overlay-buttons">
+                <h1>Empowering UAE Youth for the Future of Work</h1>
+                <p>Discover your strengths. Choose your path.</p>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
+                    <form action="" method="post">
+                        <button type="submit" name="guest" style="padding:10px 20px; background-color:#0b6e4f; color:white; border:none; border-radius:5px;">Start as Guest</button>
+                        <button type="submit" name="login" style="padding:10px 20px; background-color:#003366; color:white; border:none; border-radius:5px;">Login / Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Handle button logic using query params or manual button click detection
+    if 'guest' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("guest"):
+        st.session_state.current_user = "Guest"
+        set_page("Assessment")
+
+    if 'login' in st.session_state.get('button_clicked', '') or st.experimental_get_query_params().get("login"):
+        set_page("Login / Sign up")
 
 elif st.session_state.page == "Login / Sign up":
     st.title("Login / Sign Up")
