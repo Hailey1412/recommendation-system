@@ -127,6 +127,12 @@ if "page" not in st.session_state:
     st.session_state.page = "Homepage"
 if "education_blocks" not in st.session_state:
     st.session_state.education_blocks = []
+if 'skill_scores' not in st.session_state:
+    st.session_state.skill_scores = {}
+if 'career_results' not in st.session_state:
+    st.session_state.career_results = []
+if 'course_progress' not in st.session_state:
+    st.session_state.course_progress = {}
 
 def set_page(selected):
     st.session_state.page = selected
@@ -178,7 +184,7 @@ elif st.session_state.page == "Login / Sign up":
                 users_df.to_csv(USER_CSV, index=False)
                 st.session_state.current_user = username
                 st.success(f"Welcome, {username}! Your account has been created.")
-                set_page("Profile")
+                set_page("Assessment")
 
     elif auth_mode == "Log In":
         if st.button("Log In"):
@@ -187,7 +193,7 @@ elif st.session_state.page == "Login / Sign up":
             elif username in users_df["username"].values:
                 st.session_state.current_user = username
                 st.success(f"Welcome back, {username}!")
-                set_page("Profile")
+                set_page("Assessment")
             else:
                 st.error("User not found. Please sign up first.")
     
@@ -248,139 +254,15 @@ elif st.session_state.page == "Assessment":
         user_fields = list({edu["field"] for edu in st.session_state.education_blocks if edu["field"]})
     
         st.success("Assessment submitted successfully!")
-    
-        # ✅ STEP 4: Filter jobs from your dataset (assuming it's called df)
-        # Make sure the 'Degree' column in df is a list of degrees like ["Bachelor's", "Master's"]
-        # Convert the comma-separated strings to lists
-        #df['Degree Requirement'] = df['Degree Requirement'].apply(lambda x: [deg.strip() for deg in x.split(',')])
-        #matching_jobs = df[df['Degree Requirement'].apply(
-        #    lambda job_degrees: any(user_deg in job_degrees for user_deg in user_degrees)
-        #)]
-    
-        # Optional: Also filter by field of study
-        #if user_fields:
-        #    matching_jobs = matching_jobs[matching_jobs['Field of Study'].apply(
-         #       lambda job_fields: any(user_field in job_fields for user_field in user_fields)
-          #  )]
-    
-        # ✅ Display the results
-        #st.subheader("🎯 Jobs Matching Your Education")
-        #if not matching_jobs.empty:
-        #    st.dataframe(matching_jobs[['Job Title', 'Degree Requirement', 'Field of Study']])
-        #else:
-         #   st.info("No matching jobs found with your current education profile.")
+        
         st.write("Your responses:")
         st.write(st.session_state.assessment_responses)
 
         # Calculate skill group scores
-    skill_scores = {}
-    for skill, qid_list in skill_groups.items():
-        values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
-        skill_scores[skill] = round(np.mean(values), 2) if values else None
-
-    if st.button("Get Recommendation"):
-        set_page("Recommendations")
-        # Load model and encoders
-        model = joblib.load("best_model1.pkl")
-        mlb_degree = joblib.load("mlb_degree1.pkl")
-        mlb_field = joblib.load("mlb_field1.pkl")
-        le = joblib.load("label_encoder1.pkl")
-        job_descriptions_df = pd.read_excel("Job_descriptions.xlsx")
-        job_descriptions_dict = dict(zip(job_descriptions_df["Job Title"], job_descriptions_df["Description"]))
-    
-        # Fetch saved skill scores
-        user = st.session_state.get("current_user", "Guest")
         skill_scores = {}
-        if user != "Guest":
-            users_df = pd.read_csv(USER_CSV)
-            if user in users_df["username"].values:
-                row = users_df[users_df["username"] == user]
-                for skill in model_skill_order:
-                    score = row[skill].values[0]
-                    if pd.notna(score):
-                        skill_scores[skill] = float(score)
-        else:
-            st.warning("Skill scores not found. Please complete the assessment first.")
-            st.stop()
-    
-        # Ensure all model skills are available
-        if len(skill_scores) < len(model_skill_order):
-            st.error("Some skills are missing. Please ensure you've completed the assessment.")
-            st.stop()
-    
-        # Encode education inputs
-        degree_encoded = mlb_degree.transform([selected_degrees])
-        field_encoded = mlb_field.transform([selected_fields])
-    
-        # Prepare the input vector for the model
-        input_vector = list([skill_scores[skill] for skill in model_skill_order])
-        input_vector.extend(degree_encoded[0])
-        input_vector.extend(field_encoded[0])
-        input_vector = np.array(input_vector).reshape(1, -1)
-    
-        # Make predictions
-        predicted_label = model.predict(input_vector)[0]
-        predicted_job = le.inverse_transform([predicted_label])[0]
-    
-        # Show results
-        st.success(f"🎯 Recommended Career Path: **{predicted_job}**")
-        if predicted_job in job_descriptions_dict:
-            st.markdown(f"**Job Description:** {job_descriptions_dict[predicted_job]}")
-    
-        # Show relevant courses
-        st.markdown("### 🎓 Recommended Skill Courses")
-        for skill in model_skill_order:
-            if skill in skill_courses:
-                st.markdown(f"- **{skill}**: [{skill_courses[skill]}]({skill_courses[skill]})")
-
-
-        #Display scores 
-        st.subheader("Your Skill Assessment Results:")
-        skill_df = pd.DataFrame(skill_scores.items(), columns= ["Skill", "Average Score"])
-        st.dataframe(skill_df, use_container_width=True)
-        
-        #display as bar chart
-        st.markdown("### 📊 Skill Scores Overview")
-        skill_df = pd.DataFrame.from_dict(skill_scores, orient="index", columns=["Average Score"])
-        st.bar_chart(skill_df)
-
-
-        # Reset index to have 'Skill' as a column
-        skill_df = skill_df.reset_index().rename(columns={"index": "Skill"})
-
-        # Altair bar chart with fixed y-axis
-        bar = alt.Chart(skill_df).mark_bar(color="#4a90e2").encode(
-            x=alt.X("Skill:N", sort=None, title="Skill"),
-            y=alt.Y("Average Score:Q", scale=alt.Scale(domain=[0, 5]), title="Score"),
-            tooltip=["Skill", "Average Score"]
-        ).properties(
-            width=600,
-            height=400,
-            title="Skill Assessment Scores"
-        )
-
-        st.altair_chart(bar, use_container_width=True)
-
-        #display as text/metrcis 
-        st.markdown("### 🧠 Skill-by-Skill Scores")
-        cols = st.columns(3)
-        for i, (skill, score) in enumerate(skill_scores.items()):
-            with cols[i % 3]:
-                st.metric(label=skill, value=score)
-
-        # --- Save to user file ---
-        user = st.session_state.get("current_user", "Guest")
-        if user != "Guest":
-            users_df = pd.read_csv(USER_CSV)
-            if user in users_df["username"].values:
-                for skill, score in skill_scores.items():
-                    users_df.loc[users_df["username"] == user, skill] = score
-                users_df.to_csv(USER_CSV, index=False)
-                st.success("Your results were saved to your profile!")
-            else:
-                st.error("User not found in database.")
-        else:
-            st.info("Results not saved because you are using Guest mode.")
+        for skill, qid_list in skill_groups.items():
+            values = [st.session_state.assessment_responses[qid] for qid in qid_list if qid in st.session_state.assessment_responses]
+            skill_scores[skill] = round(np.mean(values), 2) if values else None
 
 elif st.session_state.page == "Recommendations":
     st.title("Career Recommendations")
