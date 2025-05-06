@@ -412,7 +412,7 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     )
     
     st.altair_chart(chart, use_container_width=True)
-    if st.button("Go to Career Recommendations"): 
+    if st.button("Next"): 
         set_page("Career Recommendations")
     
 elif st.session_state.page == "Profile":
@@ -460,10 +460,14 @@ elif st.session_state.page == "Career Recommendations":
         st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
         st.caption(result["description"])
 
-    if st.button("Go to Course Recommendations"): 
-        set_page("Course Recommendations")
-    if st.button("Go to Skill Results"):
-        set_page("Skills Results")
+    col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
+    with col_l: 
+        if st.button("Back"):
+            set_page("Skills Results")
+    with col_r: 
+        if st.button("Next"): 
+            set_page("Course Recommendations")
+   
 
 else: 
     st.title("Course Recommendations")
@@ -475,16 +479,18 @@ else:
         for qid, url in st.session_state.low_q_courses.items():
             st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
 
-    if st.button("Go to Career Recommendations"): 
-        set_page("Career Recommendations")
-    if st.button("Go to Skill Results"):
-        set_page("Skills Results")
-
     if st.session_state.current_user == "Guest":
         if st.button("💾 Save Results by Signing Up"):
             set_page("Login / Sign up")
     else:
         st.success("Your results are saved to your profile!")
+
+    col_l, col_cent1, col_cent2, col_r = st.columns([2,2,2,2])
+    with col_1: 
+        if st.button("Back"): 
+            set_page("Career Recommendations")
+        
+        
     
         
         
