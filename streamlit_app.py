@@ -619,11 +619,16 @@ else:
             set_page("Login / Sign up")
     else:
         st.success("✅ Your results are saved to your profile!")
-    
+
+        # "Go to Profile" button for signed-in users
+        if st.button("Go to Profile"):
+            set_page("Profile")
+        
     # Navigation
     col_l, _, _, col_r = st.columns([2, 1, 1, 2])
     with col_l: 
         if st.button("Back"):
             set_page("Career Recommendations")
+            
 
     
