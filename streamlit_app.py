@@ -497,7 +497,7 @@ elif st.session_state.page == "Career Recommendations":
    
 
 else:  
-    st.title("🎓 Course Recommendations")
+    st.title("Course Recommendations")
     st.markdown("<h3 style='color:#990000;'>Skill-Based Suggestions</h3>", unsafe_allow_html=True)
     
     # Display low-score skill-based course recommendations
@@ -514,6 +514,9 @@ else:
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+    st.write(type(assessment_responses))
+    st.write(assessment_responses)
+
     
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
@@ -537,7 +540,7 @@ else:
     # Navigation
     col_l, _, _, col_r = st.columns([2, 1, 1, 2])
     with col_l: 
-        if st.button("⬅️ Back"):
+        if st.button("Back"):
             set_page("Career Recommendations")
 
         
