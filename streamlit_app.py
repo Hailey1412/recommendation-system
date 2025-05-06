@@ -472,8 +472,15 @@ else:
     
     # Display low-score skill-based course recommendations
     for skill, url in st.session_state.low_skill_courses.items():
-        st.markdown("<div style='margin-bottom:15px; padding:10px; background-color:#f9f9f9; border-left:5px solid #990000; border-radius:5px;'> <p style='margin:0;'><strong style='color:#990000;'>{skill}</strong></p> <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>📘 View Recommended Course</a> </div>",unsafe_allow_html=True)
-        )
+        st.markdown(
+        f"""
+        <div style='margin-bottom:15px; padding:10px; background-color:#f9f9f9; border-left:5px solid #990000; border-radius:5px;'>
+            <p style='margin:0;'><strong style='color:#990000;'>{skill}</strong></p>
+            <a href="{url}" target="_blank" style='text-decoration:none; color:#000;'>📘 View Recommended Course</a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
