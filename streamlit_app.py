@@ -292,6 +292,8 @@ elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Pro
     # Store responses in session state
     if "assessment_responses" not in st.session_state:
         st.session_state.assessment_responses = {}
+    else:
+    st.warning("No assessment responses found.")
     
     for qid, question in questions.items():
         st.markdown(
@@ -512,8 +514,8 @@ else:
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
-    st.write(assessment_responses)
-    st.write(assessment_results)
+    st.write(assessment_responses.keys())
+    st.write(assessment_results.keys())
     
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
