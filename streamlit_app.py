@@ -512,7 +512,7 @@ elif st.session_state.page == "Profile":
             total = len(all_courses)
 
             for url, course_name in all_courses.items():
-                key = f"{st.session_state.current_user}_{course_name}"
+                key = f"{st.session_state.current_user}_{skill}_{course_name}"
                 is_checked = st.checkbox(course_name, key=key, value=st.session_state.course_progress.get(key, False))
                 st.session_state.course_progress[key] = is_checked
                 st.markdown(f"[🔗 Open Course]({url})", unsafe_allow_html=True)
