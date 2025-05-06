@@ -286,6 +286,35 @@ elif st.session_state.page == "Recommendations":
     st.title("🔍 Career & Skill Recommendations")
 
     st.subheader("Your Skill Assessment Results:")
+    # Create the results DataFrame
+    results_df = pd.DataFrame({
+        "Skill": list(st.session_state.skill_scores.keys()),
+        "Score": list(st.session_state.skill_scores.values())
+    })
+    
+    # Split into two columns
+    col1, col2 = st.columns([1, 2])  # Wider column for chart
+    
+    # Column 1: Display text results
+    with col1:
+        for skill, score in st.session_state.skill_scores.items():
+            st.write(f"**{skill}**: {round(score, 2)}")
+    
+    # Column 2: Display bar chart
+    with col2:
+        chart = (
+            alt.Chart(results_df)
+            .mark_bar(size=30)  # Make bars thicker
+            .encode(
+                x=alt.X("Score:Q", scale=alt.Scale(domain=[0, 5]), title="Score"),
+                y=alt.Y("Skill:N", sort="-x", title="Skill"),
+                color=alt.Color("Score:Q", scale=alt.Scale(scheme="blues"))
+            )
+            .properties(height=400, width=400)  # Bigger chart
+            .configure_axis(labelFontSize=12, titleFontSize=14)
+        )
+        st.altair_chart(chart, use_container_width=True)
+
     for skill, score in st.session_state.skill_scores.items():
         st.write(f"**{skill}**: {round(score, 2)}")
 
