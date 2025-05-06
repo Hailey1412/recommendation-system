@@ -327,8 +327,8 @@ elif st.session_state.page == "Recommendations":
     st.subheader("Skill-Based Course Recommendations")
 
     for skill, url in st.session_state.low_skill_courses.items():
-        st.markdown(f"### {skill} Course")
-        st.markdown(f"[Clock here to access the course] ({url})")
+        st.markdown(f"## {skill} Course")
+        st.markdown(f"({url})")
 
     
         #for skill, url in st.session_state.low_skill_courses.items():
