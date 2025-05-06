@@ -202,14 +202,13 @@ if st.session_state.page == "Homepage":
         """, unsafe_allow_html=True)
     
         # Create 3 columns: left, center, right
-        left_col, center_col, right_col = st.columns([1, 2, 1])
+        left_col, center_col1, center_col2, right_col = st.columns([1, 2, 2, 1])
         
-        with center_col:
-            st.markdown("### Choose an option:")
+        with center_col1:
             if st.button("Start as Guest"):
                 st.session_state.current_user = "Guest"
                 set_page("Assessment")
-        
+        with center_col2:
             if st.button("Login / Sign Up"):
                 set_page("Login / Sign up")
 
