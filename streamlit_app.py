@@ -519,7 +519,7 @@ else:
     
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
     with st.expander("More Courses"):
-        low_scores = {course: score for course, score in assessment_responses.items() if score <= 3}
+        low_scores = {course: score for course, score in skill_scores.items() if score <= 3}
         if low_scores:
             for course, score in low_scores.items():
                 course_url = questions_urls.get(course, "#")
