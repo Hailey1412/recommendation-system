@@ -511,8 +511,6 @@ else:
     
     # Divider between sections
     st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
-    st.write(type(assessment_responses))
-    st.write(assessment_responses)
     
     # Personalized Courses Recommendations
     st.markdown("<h4 style='color:#990000;'>More Personalized Courses Recommendations:</h4>", unsafe_allow_html=True)
