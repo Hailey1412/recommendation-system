@@ -294,7 +294,7 @@ elif st.session_state.page == "Recommendations":
     
   
     # Display text results on top
-    with st.expander("See Detailed Scores")
+    with st.expander("See Detailed Scores"):
         for skill, score in st.session_state.skill_scores.items():
             st.write(f"**{skill}**: {round(score, 2)}")
     
