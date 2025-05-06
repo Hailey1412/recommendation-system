@@ -412,6 +412,8 @@ elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", 
     )
     
     st.altair_chart(chart, use_container_width=True)
+    if st.button("Go to Career Recommendations"): 
+        set_page("Career Recommendations")
     
 elif st.session_state.page == "Profile":
     if st.session_state.current_user == "Guest":
@@ -451,11 +453,17 @@ elif st.session_state.page == "Profile":
         progress_ratio = completed / total if total > 0 else 0
         st.progress(progress_ratio)
         st.markdown(f"**Progress: {completed}/{total} courses completed**")
+        
 elif st.session_state.page == "Career Recommendations":
     st.header("Top 5 Career Matches:")
     for result in st.session_state.career_results:
         st.subheader(f"**{result['title']}** ")#({result['confidence']}%)")
         st.caption(result["description"])
+
+    if st.button("Go to Course Recommendations"): 
+        set_page("Course Recommendations")
+    if st.button("Go to Skill Results"):
+        set_page("Skill Results")
 
 elif st.session_state.pgae == "Course Recommendations":
     st.subheader("Skill-Based Course Recommendations")
@@ -463,10 +471,14 @@ elif st.session_state.pgae == "Course Recommendations":
     for skill, url in st.session_state.low_skill_courses.items():
         st.markdown(f"###### {skill} Course: ({url})")
 
-
     with st.expander("More Personlized Course Recommendations"):
         for qid, url in st.session_state.low_q_courses.items():
             st.markdown(f"**{questions[qid]}**: [Course Link]({url})")
+
+    if st.button("Go to Career Recommendations"): 
+        set_page("Career Recommendations")
+    if st.button("Go to Skill Results"):
+        set_page("Skill Results")
 
     if st.session_state.current_user == "Guest":
         if st.button("💾 Save Results by Signing Up"):
