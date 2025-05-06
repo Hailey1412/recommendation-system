@@ -252,7 +252,7 @@ elif st.session_state.page == "Login / Sign up":
             else:
                 st.error("User not found. Please sign up first.")
     
-elif st.session_state.page == "Assessment":
+elif st.session_state.page == "Assessment": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
     st.title("Assessment")
     st.write("Let's assess your skills!")
 
@@ -267,7 +267,7 @@ elif st.session_state.page == "Assessment":
     if st.button("Next"):
         set_page("Education Details")
 
-elif st.session_state.page == "Education Details":
+elif st.session_state.page == "Education Details": 
     st.title("🎓 Add Your Education")
 
     # Initialize education blocks
@@ -411,7 +411,7 @@ elif st.session_state.page == "Education Details":
      #   set_page("Recommendations")
 
 
-elif st.session_state.page == "Skills Results":
+elif st.session_state.page == "Skills Results": #"Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendation"
     st.title("Skill Results")
 
     st.header("Your Skill Assessment Results:")
@@ -539,9 +539,9 @@ elif st.session_state.page == "Profile":
         progress_ratio = completed / total if total > 0 else 0
         st.progress(progress_ratio)
         st.markdown(f"**Progress: {completed}/{total} courses completed**")
-elif st.session_state.page == "Career Recommendations":
+elif st.session_state.page == "Career Recommendations": "Homepage", "Login / Sign up", "Profile", "Assessment", "Education Details", "Skills Results", "Career Recommendations", "Course Recommendations"
     st.write("career rec")
-elif st.session_state.pgae == "Course Recommendation":
+elif st.session_state.pgae == "Course Recommendations":
     st.write("coruse rec")
     
         
